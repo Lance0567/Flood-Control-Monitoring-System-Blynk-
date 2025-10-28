@@ -11,6 +11,11 @@ from BlynkLib import Blynk
 BLYNK_AUTH = "wZ5IP73LpgMdLK1PDRnGEFBLHzDagQZq"
 blynk = Blynk(BLYNK_AUTH)
 
+# Connection confirmation
+@blynk.on("connected")
+def blynk_connected():
+    print("/ Raspberry Pi Connected to Blynk")
+
 # Initialize camera
 camera = Picamera2()
 camera.configure(camera.create_preview_configuration(main={"size": (840, 560), "format": "RGB888"}))
@@ -141,7 +146,11 @@ def handle_take_photo(value):
         cv2.putText(frame, timestamp, (15, 460), font, 0.8, (255, 255, 255), 2, cv2.LINE_AA)
 
         cv2.imwrite(path, frame)
-        print(f"?? Saved photo: {path}")
+        print(f"Saved photo: {path}")
+        
+        # Reset button after 1 second
+        time.sleep(1)
+        blynk.virtual_write(0, 0)
 
         # Start photo server
         if photo_server is None:
@@ -151,7 +160,7 @@ def handle_take_photo(value):
             server_thread.daemon = True
             server_thread.start()
     else:
-        print("?? V0 OFF - photo server still available for viewing.")
+        print("V0 OFF - photo server still available for viewing.")
 
 @blynk.on("V1")
 def handle_live_stream(value):
@@ -170,7 +179,6 @@ def handle_live_stream(value):
 
 # --- MAIN LOOP ---
 try:
-    print("?? Blynk Camera Control Started")
     while True:
         blynk.run()
         time.sleep(0.1)
