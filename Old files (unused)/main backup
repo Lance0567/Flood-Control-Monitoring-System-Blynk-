@@ -1,0 +1,52 @@
+import sys
+import time
+sys.path.append('/home/jesse/blynk-library-python')
+from BlynkLib import Blynk
+from picamera2 import Picamera2
+from captured_photos import handle_take_photo
+from combined_server import start_flask_and_ngrok, stop_ngrok, start_hls_stream, stop_hls_stream
+
+BLYNK_AUTH = "wZ5IP73LpgMdLK1PDRnGEFBLHzDagQZq"
+blynk = Blynk(BLYNK_AUTH)
+
+# Connection confirmation
+@blynk.on("connected")
+def blynk_connected():
+    print("/ Raspberry Pi Connected to Blynk")
+
+# ========== EVENT: Take Photo ==========
+@blynk.on("V0")
+def on_v0(value):
+    global camera
+    val = int(value[0])
+    if val == 1:
+        from picamera2 import Picamera2  # Only import/start when needed!
+        camera = Picamera2()
+        camera.configure(camera.create_preview_configuration(main={"size": (840, 560), "format": "RGB888"}))
+        camera.start()
+        handle_take_photo(blynk, camera)
+    else:
+        if camera:
+            camera.stop()
+            camera = None
+            print("Picamera2 stopped and released.")
+
+# ========== EVENT: Start server ==========
+@blynk.on("V1")  # For HLS video streaming
+def on_v1(value):
+    val = int(value[0])
+    if val == 1:
+        start_flask_and_ngrok(None)      # No camera needed for Flask server now!
+        start_hls_stream()
+    else:
+        stop_ngrok()
+        stop_hls_stream()
+
+# --- MAIN LOOP ---
+try:
+    while True:
+        blynk.run()
+except KeyboardInterrupt:
+    if camera:
+        camera.stop()
+    print("Exiting cleanly.")

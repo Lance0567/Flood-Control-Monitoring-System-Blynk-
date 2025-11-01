@@ -1,0 +1,142 @@
+import threading
+import subprocess
+import time
+from flask import Flask, render_template_string, send_from_directory
+import os
+
+PHOTO_DIR = "/home/jesse/Documents/photos"
+VIDEO_DIR = "/home/jesse/Documents/video"
+app = Flask("combined_server")
+server_thread = None
+ngrok_process = None
+ffmpeg_process = None
+camera = None  # Only used for photo capture
+
+@app.route('/photos')
+def photo_index():
+    files = sorted(os.listdir(PHOTO_DIR), reverse=True)
+    if not files:
+        return "<h3 style='text-align:center;'>No photos yet.</h3>"
+    html = """
+    <html>
+    <head>
+      <title>Captured Photos</title>
+      <!-- Font Awesome for icons -->
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+      <style>
+        body { text-align: center; font-family: Arial, sans-serif; background-color: #111; color: #eee; }
+        img { width: 90%%; max-width: 640px; height: auto; border-radius: 10px; box-shadow: 0 0 15px #333; }
+        .controls { margin-top: 20px; }
+        button { padding: 10px 20px; font-size: 18px; border: none; border-radius: 8px; background: #28a745; color: white; margin: 0 10px; cursor: pointer; }
+        button:hover { background: #218838; }
+        h2 { color: #0dcaf0; }
+        #counter { margin-top: 10px; color: #bbb; }
+      </style>
+    </head>
+    <body>
+      <h2><i class="fa-solid fa-camera"></i> Photo Viewer</h2>
+      <img id="photo" src="/photo/{{ files[0] }}">
+      <div class="controls">
+        <button onclick="prev()"><i class="fa-solid fa-arrow-left"></i> Prev</button>
+        <button onclick="next()">Next <i class="fa-solid fa-arrow-right"></i></button>
+      </div>
+      <p id="counter">1 / {{ files|length }}</p>
+      <script>
+        let images = {{ files|safe }};
+        let idx = 0;
+        function show() {
+          document.getElementById('photo').src = '/photo/' + images[idx];
+          document.getElementById('counter').innerText = (idx + 1) + " / " + images.length;
+        }
+        function next() {
+          idx = (idx + 1) % images.length;
+          show();
+        }
+        function prev() {
+          idx = (idx - 1 + images.length) % images.length;
+          show();
+        }
+      </script>
+    </body>
+    </html>
+    """
+    return render_template_string(html, files=files)
+
+@app.route('/photo/<path:filename>')
+def serve_photo(filename):
+    return send_from_directory(PHOTO_DIR, filename)
+
+# ---- HLS STREAMING ROUTES ----
+
+@app.route('/video/<path:filename>')
+def serve_video(filename):
+    return send_from_directory(VIDEO_DIR, filename)
+
+# ---- Flask and ngrok thread management ----
+
+def run_flask(camera_for_photos):
+    global camera
+    camera = camera_for_photos
+    app.run(host='0.0.0.0', port=80, debug=False, threaded=True)
+
+def start_flask_and_ngrok(input_camera):
+    global server_thread
+    if not server_thread or not server_thread.is_alive():
+        server_thread = threading.Thread(target=run_flask, args=(input_camera,))
+        server_thread.daemon = True
+        server_thread.start()
+        start_ngrok(80)
+    else:
+        print("Flask server already running.")
+        start_ngrok(80)
+
+def start_ngrok(port=80):
+    global ngrok_process
+    if not ngrok_process:
+        ngrok_process = subprocess.Popen(['ngrok', 'http', str(port)])
+        time.sleep(2)
+        print("ngrok tunnel started for all routes.")
+    else:
+        print("ngrok tunnel already running.")
+
+def stop_ngrok():
+    global ngrok_process
+    if ngrok_process:
+        ngrok_process.terminate()
+        ngrok_process = None
+        print("ngrok tunnel stopped.")
+    else:
+        print("ngrok already stopped.")
+
+# ---- HLS VIDEO HANDLING ----
+
+def start_hls_stream():
+    global ffmpeg_process
+    os.makedirs(VIDEO_DIR, exist_ok=True)
+    # Kill any previous process
+    stop_hls_stream()
+    # Start ffmpeg to capture Pi camera and generate HLS playlist
+    ffmpeg_cmd = [
+        'ffmpeg',
+        '-f', 'v4l2',
+        '-i', '/dev/video0',           # Change to your actual device if needed
+        '-vf', 'scale=640:480',
+        '-c:v', 'libx264',
+        '-preset', 'veryfast',
+        '-f', 'hls',
+        '-hls_time', '2',
+        '-hls_list_size', '5',
+        '-hls_flags', 'delete_segments',
+        os.path.join(VIDEO_DIR, 'index.m3u8')
+    ]
+    ffmpeg_process = subprocess.Popen(ffmpeg_cmd)
+    print("Started ffmpeg for HLS.")
+
+def stop_hls_stream():
+    global ffmpeg_process
+    if ffmpeg_process:
+        ffmpeg_process.terminate()
+        ffmpeg_process = None
+        print("Stopped ffmpeg/HLS stream.")
+
+# You should call start_hls_stream() when V1 is ON and stop_hls_stream() when V1 is OFF
