@@ -3,7 +3,7 @@ import time
 sys.path.append('/home/jesse/blynk-library-python')
 from BlynkLib import Blynk
 from captured_photos import handle_take_photo
-from combined_server import start_flask_and_ngrok, stop_ngrok, start_hls_stream, stop_hls_stream
+from combined_server import start_flask_server, stop_flask_server, start_hls_stream, stop_hls_stream
 
 BLYNK_AUTH = "wZ5IP73LpgMdLK1PDRnGEFBLHzDagQZq"
 blynk = Blynk(BLYNK_AUTH)
@@ -13,7 +13,7 @@ camera = None
 @blynk.on("connected")
 def blynk_connected(*args, **kwargs):   # Accepts any arguments
     print("/ Raspberry Pi Connected to Blynk")
-    blynk.set_property(1, "url", "https://unviolative-louvenia-invariantly.ngrok-free.dev/video/index.m3u8")
+    blynk.set_property(1, "url", "https://pi.ustfloodcontrol.site/video/index.m3u8")
 
 @blynk.on("V0")
 def on_v0(value):
@@ -35,13 +35,12 @@ def on_v0(value):
 def on_v1(value, *args, **kwargs):
     val = int(value[0])
     if val == 1:
-        start_flask_and_ngrok(None)
+        start_flask_server()
         start_hls_stream()
-        blynk.set_property(1, "url", "https://unviolative-louvenia-invariantly.ngrok-free.dev/video/index.m3u8")
+        blynk.set_property(1, "url", "https://pi.ustfloodcontrol.site/video/index.m3u8")
     else:
-        stop_ngrok()
         stop_hls_stream()
-
+        stop_flask_server()
 
 try:
     while True:

@@ -1,4 +1,5 @@
 import threading
+import multiprocessing
 import time
 from flask import Flask, render_template_string, send_from_directory, request
 import os
@@ -10,6 +11,8 @@ server_thread = None
 picam2 = None
 recorder_running = False
 
+server_process = None
+
 @app.after_request
 def add_cors_headers(response):
     # Allow Blynk widget/HLS.js/Video.js to access segments from any origin
@@ -20,7 +23,7 @@ def add_cors_headers(response):
     elif request.path.endswith('.ts'):
         response.headers['Content-Type'] = 'video/mp2t'
     return response
-
+    
 
 @app.route('/photos')
 def photo_index():
@@ -81,15 +84,16 @@ def serve_video(filename):
     # Segments (.ts) and playlist (.m3u8)
     return send_from_directory(VIDEO_DIR, filename)
 
-def run_flask(camera_for_photos):
-    app.run(host='0.0.0.0', port=80, debug=False, threaded=True)
+def run_flask(camera_for_photos=None):
+    # camera_for_photos is not actually used, but required for compatibility
+    app.run(host='0.0.0.0', port=5000, debug=False, threaded=True)
 
-def start_flask_server(input_camera):
-    global server_thread
-    if not server_thread or not server_thread.is_alive():
-        server_thread = threading.Thread(target=run_flask, args=(input_camera,))
-        server_thread.daemon = True
-        server_thread.start()
+def start_flask_server(dummy_camera=None):
+    global server_process
+    if server_process is None or not server_process.is_alive():
+        server_process = multiprocessing.Process(target=run_flask, args=(dummy_camera,))
+        server_process.start()
+        print("Flask server started.")
     else:
         print("Flask server already running.")
 
@@ -108,9 +112,10 @@ def start_hls_stream():
     picam2.configure(video_config)
     encoder = H264Encoder(bitrate=1000000)
     output = FfmpegOutput(
-        "-f hls -hls_time 1 -hls_list_size 3 -hls_flags delete_segments " +
-        os.path.join(VIDEO_DIR, "index.m3u8")
+        "-f hls -hls_time 4 -hls_list_size 3 -hls_flags delete_segments "
+        + os.path.join(VIDEO_DIR, "index.m3u8")
     )
+
     picam2.start_recording(encoder, output)
     recorder_running = True
     print("Started Picamera2 for HLS streaming.")
@@ -119,6 +124,19 @@ def stop_hls_stream():
     global picam2, recorder_running
     if picam2 and recorder_running:
         picam2.stop_recording()
+        picam2.close()  # <-- Add this line!
         picam2 = None
         recorder_running = False
-        print("Stopped Picamera2 HLS streaming.")
+        print("Stopped Picamera2 HLS streaming and released camera.")
+    else:
+        print("No camera to stop.")
+        
+def stop_flask_server():
+    global server_process
+    if server_process is not None and server_process.is_alive():
+        server_process.terminate()
+        server_process.join()
+        server_process = None
+        print("Flask server stopped.")
+    else:
+        print("Flask server not running.")
