@@ -1,25 +1,63 @@
-from flask import Flask, Response, send_from_directory, jsonify, render_template_string
-import os
-import threading
-import cv2
-from devices.camera_module import PiCameraModule  # Import your custom camera wrapper
+# combined_server.py - Flood Control
+from flask import Flask, Response, send_from_directory, jsonify, render_template_string, request
+import os, threading, cv2, time
+import numpy as np
+from devices.camera_module import PiCameraModule
 
 
 PHOTO_DIR = "/home/jesse/Documents/photos"
 VIDEO_DIR = "/home/jesse/Documents/video"
 app = Flask(__name__)
+camera_lock = threading.Lock()
 camera = None
-server_thread = None
-stream_running = False
+streaming_active = False
+stream_thread = None  # to manage frame capture thread
+
+@app.route('/control_camera', methods=['POST'])
+def control_camera():
+    global camera
+    action = request.json.get('action')
+    if action == 'start':
+        if camera is None:
+            camera = PiCameraModule(width=640, height=480)
+            print("Camera started by API control.")
+            return 'Camera started.'
+        else:
+            return 'Camera already running.'
+    elif action == 'stop':
+        if camera is not None:
+            camera.stop()
+            camera = None
+            print("Camera stopped by API control.")
+            return 'Camera stopped.'
+        else:
+            return 'Camera already stopped.'
+    return 'Unknown action.'
 
 def gen_frames():
     global camera
-    while stream_running:
-        frame = camera.capture_frame()  # Already (320, 240) for speed!
-        _, buffer = cv2.imencode('.jpg', frame, [int(cv2.IMWRITE_JPEG_QUALITY), 45])
-        frame_bytes = buffer.tobytes()
-        yield (b'--frame\r\n'
-               b'Content-Type: image/jpeg\r\n\r\n' + frame_bytes + b'\r\n')
+    while True:
+        try:
+            # Lock camera when accessing (if you use a threading.Lock)
+            if camera is not None:
+                frame = camera.capture_frame()
+                _, buffer = cv2.imencode('.jpg', frame, [int(cv2.IMWRITE_JPEG_QUALITY), 45])
+                frame_bytes = buffer.tobytes()
+            else:
+                black_frame = np.zeros((480, 640, 3), dtype=np.uint8)  # Adjust size as needed
+                _, buffer = cv2.imencode('.jpg', black_frame, [int(cv2.IMWRITE_JPEG_QUALITY), 45])
+                frame_bytes = buffer.tobytes()
+            yield (b'--frame\r\n'
+                   b'Content-Type: image/jpeg\r\n\r\n' + frame_bytes + b'\r\n')
+            time.sleep(0.05)  # Avoid 100% CPU
+        except Exception as e:
+            print(f"Error in gen_frames: {e}")
+            break
+
+@app.route('/livecam')
+def livecam():
+    return Response(gen_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
+
 
 @app.route('/photo_list')
 def photo_list():
@@ -29,10 +67,6 @@ def photo_list():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-@app.route('/livecam')
-def livecam():
-    return Response(gen_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
-    
 @app.route('/photos')
 def photos():
     return render_template_string('''
@@ -221,23 +255,16 @@ fetch('/photo_list')
 def photos_img(filename):
     return send_from_directory(PHOTO_DIR, filename)
 
-def start_flask_server():
-    global camera, stream_running
-    if not stream_running:
-        camera = PiCameraModule(width=640, height=480)
-        print("Camera object:", camera)
-        print("Has start method?", hasattr(camera, 'start'))
-        camera.start()
-        stream_running = True
-        app.run(host='0.0.0.0', port=8000, debug=False, threaded=True)
+def start_camera_streaming_thread():
+    global stream_thread
+    if stream_thread is None:
+        stream_thread = threading.Thread(target=some_function_that_runs_gen_frames)
+        stream_thread.start()
 
-def stop_flask_server():
-    global camera, stream_running
-    stream_running = False
-    if camera:
-        try:
-            camera.stop()
-        except Exception as e:
-            print(f"Error stopping camera: {e}")
-        camera = None
-    print("Flask server stopped.")
+def stop_camera_streaming_thread():
+    global stream_thread
+    global streaming_active
+    streaming_active = False
+    if stream_thread:
+        stream_thread.join()
+        stream_thread = None

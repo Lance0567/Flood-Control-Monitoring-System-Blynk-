@@ -7,7 +7,7 @@ class PiCameraModule:
         self.height = height
         self.picam2 = Picamera2()
         self._configure_camera()
-        print("? PiCameraModule initialized.")
+        self.picam2.start()  # Always start for streaming
 
     def _configure_camera(self):
         config = self.picam2.create_preview_configuration(
@@ -15,16 +15,13 @@ class PiCameraModule:
         )
         self.picam2.configure(config)
 
-    def start(self):
-        """Start the camera."""
-        self.picam2.start()
-        print("?? Camera started.")
-
     def capture_frame(self):
-        """Capture a single frame as a NumPy array."""
         return self.picam2.capture_array()
 
     def stop(self):
-        """Stop the camera."""
+    """Stop the camera."""
+    try:
         self.picam2.stop()
-        print("?? Camera stopped.")
+        print("? Camera stopped.")
+    except Exception as e:
+        print(f"Camera stop error: {e}")

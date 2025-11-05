@@ -1,18 +1,63 @@
+# main.py - Flood Control
 import sys
 import time
+import requests
+import subprocess
+import signal
+import os
 sys.path.append('/home/jesse/blynk-library-python')
 from BlynkLib import Blynk
 from captured_photos import handle_take_photo
-from threading import Thread
-from combined_server import start_flask_server, stop_flask_server
 
 BLYNK_AUTH = "wZ5IP73LpgMdLK1PDRnGEFBLHzDagQZq"
 blynk = Blynk(BLYNK_AUTH)
 
+gunicorn_process = None
+
+def start_gunicorn():
+    global gunicorn_process
+    if gunicorn_process is None or gunicorn_process.poll() is not None:
+        # Path to your project folder
+        work_dir = "/home/jesse/Documents/FloodControl"
+        gunicorn_process = subprocess.Popen(
+            [
+                "gunicorn", "-w", "1", "--threads", "4", "-b", "0.0.0.0:8000",
+                "--timeout", "3600", "--worker-class", "gthread", "combined_server:app"
+            ],
+            cwd=work_dir
+        )
+        print(f"Started Gunicorn with PID: {gunicorn_process.pid}")
+
+def stop_gunicorn():
+    global gunicorn_process
+    if gunicorn_process and gunicorn_process.poll() is None:
+        gunicorn_process.terminate()
+        try:
+            gunicorn_process.wait(timeout=5)
+        except subprocess.TimeoutExpired:
+            print("Force killing Gunicorn process.")
+            gunicorn_process.kill()
+        print("Stopped Gunicorn.")
+        gunicorn_process = None
+    else:
+        print("Gunicorn not running.")
+        
+def start_camera_stream():
+    try:
+        r = requests.post('http://127.0.0.1:8000/control_camera', json={'action': 'start'})
+        print(r.text)
+    except Exception as e:
+        print(f"Error starting camera stream: {e}")
+
+def stop_camera_stream():
+    try:
+        r = requests.post('http://127.0.0.1:8000/control_camera', json={'action': 'stop'})
+        print(r.text)
+    except Exception as e:
+        print(f"Error stopping camera stream: {e}")        
+
 camera = None
 streaming_active = False  # This should track V1 state changes
-
-streaming_active = False
 stream_thread = None
 
 @blynk.on("connected")
@@ -44,29 +89,19 @@ def on_v0(value):
             camera.close()
             camera = None
             
+# Then in your V1 handler:
 @blynk.on("V1")
 def on_v1(value):
-    global streaming_active, stream_thread
     val = int(value[0])
     if val == 1:
-        if not streaming_active:
-            # Start Flask stream in a separate thread
-            stream_thread = Thread(target=start_flask_server, daemon=True)
-            stream_thread.start()
-            streaming_active = True
-            print("Live stream started.")
-            blynk.set_property(1, "url", "https://pi.ustfloodcontrol.site/livecam")
-            blynk.virtual_write(1, 1)
-        else:
-            print("Stream already active.")
+        start_gunicorn()                  # This starts the Flask/Gunicorn process
+        time.sleep(2)                     # Wait a little for Gunicorn to be live (optional but helps)
+        start_camera_stream()             # This tells Flask to create/start the camera
+        print("Live stream started.")
     else:
-        if streaming_active:
-            stop_flask_server()
-            streaming_active = False
-            print("Live stream stopped.")
-            blynk.virtual_write(1, 0)
-        else:
-            print("Stream not active.")            
+        stop_camera_stream()              # This tells Flask to stop & release the camera
+        stop_gunicorn()                   # This kills the Gunicorn server
+        print("Live stream stopped.")
 
 try:
     while True:
