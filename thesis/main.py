@@ -1,4 +1,4 @@
-# main.py
+# main.py - Sample from the internet
 import time
 from devices.ultra_sonic_sensor import A0221AU
 from devices.camera_module import PiCameraModule

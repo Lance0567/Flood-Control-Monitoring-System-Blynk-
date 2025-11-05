@@ -1,3 +1,4 @@
+# camera_module.py
 from picamera2 import Picamera2
 
 class PiCameraModule:
@@ -6,10 +7,9 @@ class PiCameraModule:
         self.height = height
         self.picam2 = Picamera2()
         self._configure_camera()
-        print("✅ PiCameraModule initialized.")
+        print("? PiCameraModule initialized.")
 
     def _configure_camera(self):
-        """Configure camera for RGB streaming."""
         config = self.picam2.create_preview_configuration(
             main={"size": (self.width, self.height), "format": "RGB888"}
         )
@@ -18,7 +18,7 @@ class PiCameraModule:
     def start(self):
         """Start the camera."""
         self.picam2.start()
-        print("📸 Camera started.")
+        print("?? Camera started.")
 
     def capture_frame(self):
         """Capture a single frame as a NumPy array."""
@@ -27,4 +27,4 @@ class PiCameraModule:
     def stop(self):
         """Stop the camera."""
         self.picam2.stop()
-        print("🛑 Camera stopped.")
+        print("?? Camera stopped.")

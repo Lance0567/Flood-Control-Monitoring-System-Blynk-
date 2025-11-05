@@ -3,13 +3,17 @@ import time
 sys.path.append('/home/jesse/blynk-library-python')
 from BlynkLib import Blynk
 from captured_photos import handle_take_photo
-from combined_server import start_flask_server, stop_flask_server, start_hls_stream, stop_hls_stream
+from threading import Thread
+from combined_server import start_flask_server, stop_flask_server
 
 BLYNK_AUTH = "wZ5IP73LpgMdLK1PDRnGEFBLHzDagQZq"
 blynk = Blynk(BLYNK_AUTH)
 
 camera = None
 streaming_active = False  # This should track V1 state changes
+
+streaming_active = False
+stream_thread = None
 
 @blynk.on("connected")
 def blynk_connected(*args, **kwargs):   # Accepts any arguments
@@ -39,20 +43,30 @@ def on_v0(value):
             camera.stop()
             camera.close()
             camera = None
-
+            
 @blynk.on("V1")
-def on_v1(value, *args, **kwargs):
-    global streaming_active
+def on_v1(value):
+    global streaming_active, stream_thread
     val = int(value[0])
     if val == 1:
-        start_flask_server()
-        start_hls_stream()
-        streaming_active = True
-        blynk.set_property(1, "url", "https://pi.ustfloodcontrol.site/video/index.m3u8")
+        if not streaming_active:
+            # Start Flask stream in a separate thread
+            stream_thread = Thread(target=start_flask_server, daemon=True)
+            stream_thread.start()
+            streaming_active = True
+            print("Live stream started.")
+            blynk.set_property(1, "url", "https://pi.ustfloodcontrol.site/livecam")
+            blynk.virtual_write(1, 1)
+        else:
+            print("Stream already active.")
     else:
-        stop_hls_stream()
-        stop_flask_server()
-        streaming_active = False
+        if streaming_active:
+            stop_flask_server()
+            streaming_active = False
+            print("Live stream stopped.")
+            blynk.virtual_write(1, 0)
+        else:
+            print("Stream not active.")            
 
 try:
     while True:
