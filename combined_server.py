@@ -58,6 +58,9 @@ def gen_frames():
 def livecam():
     return Response(gen_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
+@app.route('/photos_img/<path:filename>')
+def photos_img(filename):
+    return send_from_directory(PHOTO_DIR, filename)
 
 @app.route('/photo_list')
 def photo_list():
@@ -69,6 +72,33 @@ def photo_list():
 
 @app.route('/photos')
 def photos():
+    # Grab 'level' parameter from query string, default to 'all'
+    level = request.args.get('level', 'all')
+
+    # Folder mapping
+    folder_map = {
+        'all': [
+            PHOTO_DIR,
+            os.path.join(PHOTO_DIR, 'yellow'),
+            os.path.join(PHOTO_DIR, 'orange'),
+            os.path.join(PHOTO_DIR, 'red'),
+        ],
+        'yellow': [os.path.join(PHOTO_DIR, 'yellow')],
+        'orange': [os.path.join(PHOTO_DIR, 'orange')],
+        'red': [os.path.join(PHOTO_DIR, 'red')],
+    }
+    selected_folders = folder_map.get(level, folder_map['all'])
+
+    # Walk selected folders and collect photo filepaths (relative to /photos_img/)
+    files = []
+    for folder in selected_folders:
+        if os.path.isdir(folder):
+            for fname in sorted(os.listdir(folder)):
+                if fname.lower().endswith('.jpg'):
+                    rel_path = os.path.relpath(os.path.join(folder, fname), PHOTO_DIR)
+                    files.append(rel_path.replace("\\", "/"))  # for Windows paths
+
+    # Render template with current 'level' and files list
     return render_template_string('''
 <!DOCTYPE html>
 <html>
@@ -76,94 +106,24 @@ def photos():
     <title>Flood Control Captured Photos</title>
     <link href="https://fonts.googleapis.com/css?family=Montserrat:700,400" rel="stylesheet">
     <style>
-        body {
-            background: #f5f6fa;
-            color: #222831;
-            font-family: 'Montserrat', Arial, sans-serif;
-            text-align: center;
-            margin: 0;
-            padding: 0;
-        }
-        .gallery-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 98vh;
-        }
-        h2 {
-            margin-bottom: 24px;
-            font-weight: 700;
-            letter-spacing: 0.03em;
-        }
-        .slide-img-box {
-            position: relative;
-            width: 600px;
-            max-width: 90vw;
-            margin-bottom: 12px;
-        }
-        #photo {
-            width: 100%;
-            max-height: 70vh;
-            object-fit: contain;
-            border-radius: 16px;
+        body { background: #f5f6fa; color: #222831; font-family: 'Montserrat', Arial, sans-serif; text-align: center; margin: 0; padding: 0;}
+        .gallery-container { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 98vh;}
+        h2 { margin-bottom: 24px; font-weight: 700; letter-spacing: 0.03em;}
+        .slide-img-box { position: relative; width: 600px; max-width: 90vw; margin-bottom: 12px;}
+        #photo { width: 100%; max-height: 70vh; object-fit: contain; border-radius: 16px;
             box-shadow: 0 8px 24px rgba(44, 62, 80, 0.13), 0 1.5px 10px rgba(44,62,80,0.09);
-            background: #e6e6e6;
-            opacity: 0;
-            transition: opacity 0.7s;
-        }
-        #photo.active {
-            opacity: 1;
-        }
-        .gallery-controls {
-            margin-bottom: 10px;
-        }
-        button {
-            font-size: 1.4em;
-            font-family: inherit;
-            padding: 9px 40px;
-            background: #3742fa;
-            color: #fff;
-            border: none;
-            border-radius: 30px;
-            margin: 0 18px;
-            cursor: pointer;
-            box-shadow: 0 3px 11px rgba(44, 62, 80, 0.09);
-            outline: none;
-            transition: background 0.2s;            
-        }
-        button:active {
-            background: #5352ed;
-        }
-        #counter {
-            font-size: 1.2em;
-            color: #2e2e2e;
-            margin-top: 12px;
-            margin-bottom: 28px;
-            letter-spacing: 0.02em;
-        }
-        .thumb-strip {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-        .thumb {
-            width: 56px;
-            height: 38px;
-            margin: 0 5px;
-            object-fit: cover;
-            border-radius: 7px;
-            background: #d2dae2;
-            box-shadow: 0 2px 8px rgba(44,62,80,0.06);
-            cursor: pointer;
-            opacity: 0.6;
-            border: 2.5px solid #d2dae2;
-            transition: opacity 0.3s, border 0.2s;
-        }
-        .thumb.selected {
-            opacity: 1;
-            border: 2.5px solid #3742fa;
-        }
+            background: #e6e6e6; opacity: 0; transition: opacity 0.7s;}
+        #photo.active { opacity: 1;}
+        .gallery-controls { margin-bottom: 10px;}
+        button { font-size: 1.4em; font-family: inherit; padding: 9px 40px; background: #3742fa; color: #fff; border: none; border-radius: 30px; margin: 0 18px; cursor: pointer; box-shadow: 0 3px 11px rgba(44, 62, 80, 0.09); outline: none; transition: background 0.2s;}
+        button:active { background: #5352ed;}
+        #counter { font-size: 1.2em; color: #2e2e2e; margin-top: 12px; margin-bottom: 28px; letter-spacing: 0.02em;}
+        .thumb-strip { display: flex; justify-content: center; flex-wrap: wrap;}
+        .thumb { width: 56px; height: 38px; margin: 0 5px; object-fit: cover; border-radius: 7px; background: #d2dae2;
+            box-shadow: 0 2px 8px rgba(44,62,80,0.06); cursor: pointer; opacity: 0.6; border: 2.5px solid #d2dae2;
+            transition: opacity 0.3s, border 0.2s;}
+        .thumb.selected { opacity: 1; border: 2.5px solid #3742fa;}
+        .dropdown-bar { margin-bottom: 20px; }
         @media (max-width: 800px) {
             .slide-img-box { width: 99vw; }
             #photo { max-height: 56vw; }
@@ -172,7 +132,16 @@ def photos():
 </head>
 <body>
     <div class="gallery-container">
-        <h2>Flood Control Photo Slideshow</h2>
+        <h2>Flood Monitoring Captured Photos</h2>
+        <div class="dropdown-bar">
+            <label for="level-select"><b>Show:</b></label>
+            <select id="level-select">
+                <option value="all" {% if level == 'all' %}selected{% endif %}>All Photos</option>
+                <option value="yellow" {% if level == 'yellow' %}selected{% endif %}>Yellow Warning Level</option>
+                <option value="orange" {% if level == 'orange' %}selected{% endif %}>Orange Warning Level</option>
+                <option value="red" {% if level == 'red' %}selected{% endif %}>Red Warning Level</option>
+            </select>
+        </div>
         <div class="slide-img-box">
             <img id="photo" src="" alt="No Photo">
         </div>
@@ -184,8 +153,16 @@ def photos():
         <div class="thumb-strip" id="thumbstrip"></div>
     </div>
 <script>
-let photos = [];
+let photos = {{ files|tojson }};
 let idx = 0;
+
+// handle dropdown change
+document.addEventListener("DOMContentLoaded", function() {
+    document.getElementById('level-select').addEventListener('change', function() {
+        let selected = this.value;
+        window.location = "/photos?level=" + selected;
+    });
+});
 
 function preloadThumbnails(photoList) {
     let thumbBar = document.getElementById('thumbstrip');
@@ -238,22 +215,13 @@ document.getElementById('next').onclick = function() {
         updatePhoto();
     }
 };
-fetch('/photo_list')
-    .then(r => r.json())
-    .then(list => {
-        photos = list;
-        idx = 0;
-        preloadThumbnails(photos);
-        updatePhoto();
-    });
+
+preloadThumbnails(photos);
+updatePhoto();
 </script>
 </body>
 </html>
-    ''')
-
-@app.route('/photos_img/<filename>')
-def photos_img(filename):
-    return send_from_directory(PHOTO_DIR, filename)
+    ''', files=files, level=level)
 
 def start_camera_streaming_thread():
     global stream_thread

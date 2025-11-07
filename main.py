@@ -164,37 +164,37 @@ def on_v1(value):
         print("Live stream stopped.")
         
 # Water level sensor        
-def update_water_level_sensor(blynk):
-    last_inverted = None
-    last_warning = 0  # Start with safe state
-    
-    while True:
-        dist = read_distance()
-        if dist is not None:
-            # Invert for gauge
-            inverted_value = 200 - dist
-            inverted_value = max(0, min(200, inverted_value))
-            
-            # Get warning with hysteresis (pass current state)
-            warning_img = map_distance_to_warning_image(dist, last_warning)
-            
-            # Only send when values change
-            if inverted_value != last_inverted:
-                blynk.virtual_write(3, inverted_value)
-                last_inverted = inverted_value
-                print(f"Gauge updated: {inverted_value}")
-                
-            if warning_img != last_warning:
-                blynk.virtual_write(4, warning_img)
-                last_warning = warning_img
-                print(f"Warning updated: {warning_img}")
-                
-            print(f"Distance: {dist} mm ? Gauge: {inverted_value} | Warning: {warning_img}")
-        else:
-            print("No valid sensor data received.")
-        time.sleep(0.2)
-        
-threading.Thread(target=update_water_level_sensor, args=(blynk,), daemon=True).start()        
+# def update_water_level_sensor(blynk):
+#     last_inverted = None
+#     last_warning = 0  # Start with safe state
+#     
+#     while True:
+#         dist = read_distance()
+#         if dist is not None:
+#             # Invert for gauge
+#             inverted_value = 200 - dist
+#             inverted_value = max(0, min(200, inverted_value))
+#             
+#             # Get warning with hysteresis (pass current state)
+#             warning_img = map_distance_to_warning_image(dist, last_warning)
+#             
+#             # Only send when values change
+#             if inverted_value != last_inverted:
+#                 blynk.virtual_write(3, inverted_value)
+#                 last_inverted = inverted_value
+#                 print(f"Gauge updated: {inverted_value}")
+#                 
+#             if warning_img != last_warning:
+#                 blynk.virtual_write(4, warning_img)
+#                 last_warning = warning_img
+#                 print(f"Warning updated: {warning_img}")
+#                 
+#             print(f"Distance: {dist} mm ? Gauge: {inverted_value} | Warning: {warning_img}")
+#         else:
+#             print("No valid sensor data received.")
+#         time.sleep(0.2)
+#         
+# threading.Thread(target=update_water_level_sensor, args=(blynk,), daemon=True).start()        
 
 try:
     while True:
