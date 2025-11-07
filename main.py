@@ -96,7 +96,7 @@ def stop_gunicorn():
     if gunicorn_process and gunicorn_process.poll() is None:
         gunicorn_process.terminate()
         try:
-            gunicorn_process.wait(timeout=5)
+            gunicorn_process.wait(timeout=3)
         except subprocess.TimeoutExpired:
             print("Force killing Gunicorn process.")
             gunicorn_process.kill()
