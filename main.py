@@ -5,6 +5,8 @@ import requests
 import subprocess
 import signal
 import os
+import serial
+import threading
 sys.path.append('/home/jesse/blynk-library-python')
 from BlynkLib import Blynk
 from captured_photos import handle_take_photo
@@ -13,6 +15,67 @@ BLYNK_AUTH = "wZ5IP73LpgMdLK1PDRnGEFBLHzDagQZq"
 blynk = Blynk(BLYNK_AUTH)
 
 gunicorn_process = None
+camera = None
+streaming_active = False  # This should track V1 state changes
+stream_thread = None
+
+# --- Ultrasonic sensor thread module ---
+
+# Set up the UART serial port for A02YYUW
+ser = serial.Serial('/dev/serial0', 9600, timeout=1)
+
+def read_distance():
+    while True:
+        header = ser.read(9)
+        if header and header[0] == 255:
+            rest = ser.read(3)
+            if len(rest) == 3:
+                dist = (rest[0] << 8) + rest[1]
+                # Optionally sanity-check within your min/max
+                if 0 <= dist <= 100:
+                    return dist
+                else:
+                    # Print warning if value is out-of-bounds for your gauge
+                    print(f"Warning: measured distance {dist} mm is outside gauge range!")
+                    return dist
+
+# Gauge widget
+def map_distance_to_flood_level(distance):
+    """Map water distance in mm to a flood warning level for Blynk."""
+    if distance is None:
+        return None
+    if 150 <= distance <= 200:
+        return 0  # No warning
+    elif 90 <= distance <= 140:
+        return 1  # Yellow warning
+    elif 40 <= distance <= 80:
+        return 2  # Orange warning
+    elif 0 <= distance <= 30:
+        return 3  # Red warning
+    else:
+        return 0  # Optional: treat out-of-bounds as 'No warning'
+    
+# Status widget    
+def map_distance_to_warning_image(distance, current_warning):
+    """Map water distance to warning image with hysteresis to prevent flickering."""
+    if distance is None:
+        return current_warning  # Keep current state if no reading
+    
+    # When moving to higher warning (water rising - distance decreasing)
+    if distance <= 25:  # Enter Red (was 0-30)
+        return 3
+    elif distance <= 35 and current_warning == 3:  # Stay in Red until 35mm
+        return 3
+    elif distance <= 75:  # Enter Orange (was 40-80)
+        return 2
+    elif distance <= 85 and current_warning == 2:  # Stay in Orange until 85mm
+        return 2
+    elif distance <= 135:  # Enter Yellow (was 90-140)
+        return 1
+    elif distance <= 145 and current_warning == 1:  # Stay in Yellow until 145mm
+        return 1
+    else:  # Safe zone (150-200)
+        return 0
 
 def start_gunicorn():
     global gunicorn_process
@@ -56,15 +119,12 @@ def stop_camera_stream():
     except Exception as e:
         print(f"Error stopping camera stream: {e}")        
 
-camera = None
-streaming_active = False  # This should track V1 state changes
-stream_thread = None
-
 @blynk.on("connected")
 def blynk_connected(*args, **kwargs):   # Accepts any arguments
     print("/ Raspberry Pi Connected to Blynk")
-    blynk.set_property(1, "url", "https://pi.ustfloodcontrol.site/video/index.m3u8")
+    blynk.set_property(1, "url", "https://pi.ustfloodcontrol.site/livecam")
 
+# Take photo
 @blynk.on("V0")
 def on_v0(value):
     global camera, streaming_active
@@ -89,7 +149,7 @@ def on_v0(value):
             camera.close()
             camera = None
             
-# Then in your V1 handler:
+# Live cam and web server            
 @blynk.on("V1")
 def on_v1(value):
     val = int(value[0])
@@ -102,6 +162,39 @@ def on_v1(value):
         stop_camera_stream()              # This tells Flask to stop & release the camera
         stop_gunicorn()                   # This kills the Gunicorn server
         print("Live stream stopped.")
+        
+# Water level sensor        
+def update_water_level_sensor(blynk):
+    last_inverted = None
+    last_warning = 0  # Start with safe state
+    
+    while True:
+        dist = read_distance()
+        if dist is not None:
+            # Invert for gauge
+            inverted_value = 200 - dist
+            inverted_value = max(0, min(200, inverted_value))
+            
+            # Get warning with hysteresis (pass current state)
+            warning_img = map_distance_to_warning_image(dist, last_warning)
+            
+            # Only send when values change
+            if inverted_value != last_inverted:
+                blynk.virtual_write(3, inverted_value)
+                last_inverted = inverted_value
+                print(f"Gauge updated: {inverted_value}")
+                
+            if warning_img != last_warning:
+                blynk.virtual_write(4, warning_img)
+                last_warning = warning_img
+                print(f"Warning updated: {warning_img}")
+                
+            print(f"Distance: {dist} mm ? Gauge: {inverted_value} | Warning: {warning_img}")
+        else:
+            print("No valid sensor data received.")
+        time.sleep(0.2)
+        
+threading.Thread(target=update_water_level_sensor, args=(blynk,), daemon=True).start()        
 
 try:
     while True:
