@@ -125,46 +125,87 @@ def blynk_connected(*args, **kwargs):   # Accepts any arguments
     print("/ Raspberry Pi Connected to Blynk")
     blynk.set_property(1, "url", "https://pi.ustfloodcontrol.site/livecam")
 
-# Take photo
+# Take photo with conflict detection and auto-retry
 @blynk.on("V0")
 def on_v0(value):
     global camera, streaming_active
     val = int(value[0])
+    
     if val == 1:
-        if streaming_active:
-            stop_hls_stream()
-            stop_flask_server()
+        print("V0: Take photo request received")
+        
+        # Check if V1 (live stream) is active
+        if streaming_active or gunicorn_process is not None:
+            print("V0: Camera/stream is active (V1). Stopping stream first...")
+            
+            # Stop the live stream
+            stop_camera_stream()
+            time.sleep(1)  # Wait for camera to release
+            stop_gunicorn()
             streaming_active = False
+            
+            # Turn off V1 in Blynk app
             blynk.virtual_write(1, 0)
-        from picamera2 import Picamera2
-        camera = Picamera2()
-        camera.configure(camera.create_preview_configuration(main={"size": (840, 560), "format": "RGB888"}))
-        camera.start()
-        handle_take_photo(blynk, camera)
-        camera.stop()
-        camera.close()
-        camera = None
+            print("V0: Stream stopped. Waiting for camera to be ready...")
+            time.sleep(2)  # Give camera time to fully release
+        
+        # Now take the photo
+        try:
+            from picamera2 import Picamera2
+            camera = Picamera2()
+            camera.configure(camera.create_preview_configuration(main={"size": (840, 560), "format": "RGB888"}))
+            camera.start()
+            print("V0: Camera started, taking photo...")
+            
+            handle_take_photo(blynk, camera)
+            
+            camera.stop()
+            camera.close()
+            camera = None
+            print("V0: Photo taken successfully")
+            
+        except Exception as e:
+            print(f"V0: Error taking photo: {e}")
+            if camera:
+                try:
+                    camera.stop()
+                    camera.close()
+                except:
+                    pass
+                camera = None
+        
+        # Auto-reset V0 button
+        time.sleep(0.5)
+        blynk.virtual_write(0, 0)
+        
     else:
+        # V0 turned off manually
         if camera:
             camera.stop()
             camera.close()
             camera = None
+            print("V0: Camera released")
             
 # Live cam and web server            
 @blynk.on("V1")
 def on_v1(value):
+    global streaming_active
     val = int(value[0])
+    
     if val == 1:
+        print("V1: Live stream request received")
+        streaming_active = True
         start_gunicorn()                  # This starts the Flask/Gunicorn process
-        time.sleep(2)                     # Wait a little for Gunicorn to be live (optional but helps)
+        time.sleep(2)                     # Wait a little for Gunicorn to be live
         start_camera_stream()             # This tells Flask to create/start the camera
-        print("Live stream started.")
+        print("V1: Live stream started.")
     else:
+        print("V1: Stop stream request received")
+        streaming_active = False
         stop_camera_stream()              # This tells Flask to stop & release the camera
         stop_gunicorn()                   # This kills the Gunicorn server
-        print("Live stream stopped.")
-        
-# Water level sensor        
+        print("V1: Live stream stopped.")
+               
 # Water level sensor        
 def update_water_level_sensor(blynk):
     last_inverted = None
