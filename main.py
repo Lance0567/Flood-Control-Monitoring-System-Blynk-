@@ -7,14 +7,47 @@ import signal
 import os
 import serial
 import threading
-from datetime import date
+import logging
+from datetime import date, datetime
 sys.path.append('/home/jesse/blynk-library-python')
 from BlynkLib import Blynk
 from captured_photos import handle_take_photo
 
 BLYNK_AUTH = "wZ5IP73LpgMdLK1PDRnGEFBLHzDagQZq"
+
+# --- Logging Configuration ---
+LOG_DIR = "/home/jesse/Documents/FloodControl/logs"
+os.makedirs(LOG_DIR, exist_ok=True)
+
+# Create logger
+logger = logging.getLogger('FloodControl')
+logger.setLevel(logging.INFO)
+
+# File handler - logs to file with rotation
+log_filename = os.path.join(LOG_DIR, f"flood_control_{datetime.now().strftime('%Y%m%d')}.log")
+file_handler = logging.FileHandler(log_filename)
+file_handler.setLevel(logging.INFO)
+
+# Console handler - also print to console
+console_handler = logging.StreamHandler()
+console_handler.setLevel(logging.INFO)
+
+# Formatter
+formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s', datefmt='%Y-%m-%d %H:%M:%S')
+file_handler.setFormatter(formatter)
+console_handler.setFormatter(formatter)
+
+logger.addHandler(file_handler)
+logger.addHandler(console_handler)
+
+logger.info("=" * 60)
+logger.info("Flood Control System Starting")
+logger.info("=" * 60)
+
+# Initialize Blynk after logger
 blynk = Blynk(BLYNK_AUTH)
 
+# --- Global Variables ---
 gunicorn_process = None
 camera = None
 streaming_active = False  # This should track V1 state changes
@@ -23,22 +56,29 @@ stream_thread = None
 # --- Ultrasonic sensor thread module ---
 
 # Set up the UART serial port for A02YYUW
-ser = serial.Serial('/dev/serial0', 9600, timeout=1)
+try:
+    ser = serial.Serial('/dev/serial0', 9600, timeout=1)
+    logger.info("UART serial port initialized successfully on /dev/serial0")
+except Exception as e:
+    logger.error(f"Failed to initialize UART serial port: {e}")
+    ser = None
 
 def read_distance():
     while True:
-        header = ser.read(9)
-        if header and header[0] == 255:
-            rest = ser.read(3)
-            if len(rest) == 3:
-                dist = (rest[0] << 8) + rest[1]
-                # Optionally sanity-check within your min/max
-                if 0 <= dist <= 100:
+        if ser is None:
+            time.sleep(1)
+            continue
+        try:
+            header = ser.read(9)
+            if header and header[0] == 255:
+                rest = ser.read(3)
+                if len(rest) == 3:
+                    dist = (rest[0] << 8) + rest[1]
                     return dist
-                else:
-                    # Print warning if value is out-of-bounds for your gauge
-                    print(f"Warning: measured distance {dist} mm is outside gauge range!")
-                    return dist
+        except Exception as e:
+            logger.error(f"Error reading distance from sensor: {e}")
+            print(f"Warning: measured distance {dist} mm is outside gauge range!")
+            time.sleep(1)                
 
 # Gauge widget
 def map_distance_to_flood_level(distance):
@@ -81,47 +121,58 @@ def map_distance_to_warning_image(distance, current_warning):
 def start_gunicorn():
     global gunicorn_process
     if gunicorn_process is None or gunicorn_process.poll() is not None:
-        # Path to your project folder
         work_dir = "/home/jesse/Documents/FloodControl"
-        gunicorn_process = subprocess.Popen(
-            [
-                "gunicorn", "-w", "1", "--threads", "4", "-b", "0.0.0.0:8000",
-                "--timeout", "3600", "--worker-class", "gthread", "combined_server:app"
-            ],
-            cwd=work_dir
-        )
-        print(f"Started Gunicorn with PID: {gunicorn_process.pid}")
+        try:
+            gunicorn_process = subprocess.Popen(
+                [
+                    "gunicorn", "-w", "1", "--threads", "4", "-b", "0.0.0.0:8000",
+                    "--timeout", "3600", "--worker-class", "gthread", "combined_server:app"
+                ],
+                cwd=work_dir
+            )
+            logger.info(f"Gunicorn server started with PID: {gunicorn_process.pid}")
+            print(f"Started Gunicorn with PID: {gunicorn_process.pid}")
+        except Exception as e:
+            logger.error(f"Failed to start Gunicorn: {e}")
 
 def stop_gunicorn():
     global gunicorn_process
     if gunicorn_process and gunicorn_process.poll() is None:
-        gunicorn_process.terminate()
         try:
+            gunicorn_process.terminate()
             gunicorn_process.wait(timeout=3)
+            logger.info("Gunicorn server stopped successfully")
+            print("Stopped Gunicorn.")
         except subprocess.TimeoutExpired:
+            logger.warning("Gunicorn did not stop gracefully, force killing")
             print("Force killing Gunicorn process.")
             gunicorn_process.kill()
-        print("Stopped Gunicorn.")
         gunicorn_process = None
     else:
+        logger.debug("Gunicorn was not running")
         print("Gunicorn not running.")
         
 def start_camera_stream():
     try:
-        r = requests.post('http://127.0.0.1:8000/control_camera', json={'action': 'start'})
+        r = requests.post('http://127.0.0.1:8000/control_camera', json={'action': 'start'}, timeout=5)
+        logger.info(f"Camera stream start request: {r.text}")
         print(r.text)
     except Exception as e:
+        logger.error(f"Error starting camera stream: {e}")
         print(f"Error starting camera stream: {e}")
 
 def stop_camera_stream():
     try:
-        r = requests.post('http://127.0.0.1:8000/control_camera', json={'action': 'stop'})
+        r = requests.post('http://127.0.0.1:8000/control_camera', json={'action': 'stop'}, timeout=5)
+        logger.info(f"Camera stream stop request: {r.text}")
         print(r.text)
     except Exception as e:
-        print(f"Error stopping camera stream: {e}")        
+        logger.error(f"Error stopping camera stream: {e}")
+        print(f"Error stopping camera stream: {e}")
 
 @blynk.on("connected")
 def blynk_connected(*args, **kwargs):   # Accepts any arguments
+    logger.info("Raspberry Pi connected to Blynk cloud successfully")
     print("/ Raspberry Pi Connected to Blynk")
     blynk.set_property(1, "url", "https://pi.ustfloodcontrol.site/livecam")
 
@@ -136,6 +187,8 @@ def on_v0(value):
         
         # Check if V1 (live stream) is active
         if streaming_active or gunicorn_process is not None:
+            logger.warning("V0: Camera conflict detected - live stream is active")
+            logger.info("V0: Stopping live stream to free camera...")
             print("V0: Camera/stream is active (V1). Stopping stream first...")
             
             # Stop the live stream
@@ -146,6 +199,7 @@ def on_v0(value):
             
             # Turn off V1 in Blynk app
             blynk.virtual_write(1, 0)
+            logger.info("V0: Live stream stopped, V1 reset to OFF")
             print("V0: Stream stopped. Waiting for camera to be ready...")
             time.sleep(2)  # Give camera time to fully release
         
@@ -155,9 +209,11 @@ def on_v0(value):
             camera = Picamera2()
             camera.configure(camera.create_preview_configuration(main={"size": (840, 560), "format": "RGB888"}))
             camera.start()
+            logger.info("V0: Camera initialized and started")
             print("V0: Camera started, taking photo...")
             
             handle_take_photo(blynk, camera)
+            logger.info("V0: Photo captured successfully")
             
             camera.stop()
             camera.close()
@@ -165,6 +221,7 @@ def on_v0(value):
             print("V0: Photo taken successfully")
             
         except Exception as e:
+            logger.error(f"V0: Error taking photo: {e}", exc_info=True)
             print(f"V0: Error taking photo: {e}")
             if camera:
                 try:
@@ -177,6 +234,7 @@ def on_v0(value):
         # Auto-reset V0 button
         time.sleep(0.5)
         blynk.virtual_write(0, 0)
+        logger.info("V0: Button auto-reset to OFF")
         
     else:
         # V0 turned off manually
@@ -184,6 +242,7 @@ def on_v0(value):
             camera.stop()
             camera.close()
             camera = None
+            logger.info("V0: Camera manually released")
             print("V0: Camera released")
             
 # Live cam and web server            
@@ -193,17 +252,21 @@ def on_v1(value):
     val = int(value[0])
     
     if val == 1:
+        logger.info("V1: Live stream button pressed (ON)")
         print("V1: Live stream request received")
         streaming_active = True
         start_gunicorn()                  # This starts the Flask/Gunicorn process
         time.sleep(2)                     # Wait a little for Gunicorn to be live
         start_camera_stream()             # This tells Flask to create/start the camera
+        logger.info("V1: Live stream started successfully")
         print("V1: Live stream started.")
     else:
+        logger.info("V1: Live stream button pressed (OFF)")
         print("V1: Stop stream request received")
         streaming_active = False
         stop_camera_stream()              # This tells Flask to stop & release the camera
         stop_gunicorn()                   # This kills the Gunicorn server
+        logger.info("V1: Live stream stopped successfully")
         print("V1: Live stream stopped.")
                
 # Water level sensor        
@@ -217,6 +280,10 @@ def update_water_level_sensor(blynk):
         2: None,  # Orange
         3: None   # Red
     }
+    
+    warning_names = {0: "Safe", 1: "Yellow", 2: "Orange", 3: "Red"}
+    
+    logger.info("Water level sensor monitoring thread started")
     
     while True:
         dist = read_distance()
@@ -232,10 +299,12 @@ def update_water_level_sensor(blynk):
             if inverted_value != last_inverted:
                 blynk.virtual_write(3, inverted_value)
                 last_inverted = inverted_value
+                logger.info(f"V3 (Gauge): Water level updated to {inverted_value} (distance: {dist}mm)")
                 print(f"Gauge updated: {inverted_value}")
                 
             if warning_img != last_warning:
                 blynk.virtual_write(4, warning_img)
+                logger.warning(f"V4 (Warning): Alert level changed from {warning_names[last_warning]} to {warning_names[warning_img]} (distance: {dist}mm)")
                 last_warning = warning_img
                 print(f"Warning updated: {warning_img}")
                 
@@ -244,25 +313,42 @@ def update_water_level_sensor(blynk):
                     today = date.today()
                     # Only take photo if we haven't taken one today for this level
                     if last_photo_dates[warning_img] != today:
+                        logger.info(f"Auto-capture triggered for {warning_names[warning_img]} warning level")
                         print(f"Taking photo for warning level {warning_img}...")
                         try:
                             from captured_photos import capture_warning_photo
                             capture_warning_photo(warning_img)
                             last_photo_dates[warning_img] = today
+                            logger.info(f"Warning photo captured successfully for {warning_names[warning_img]} level")
                         except Exception as e:
+                            logger.error(f"Error capturing warning photo: {e}", exc_info=True)
                             print(f"Error capturing warning photo: {e}")
                 
             print(f"Distance: {dist} mm ? Gauge: {inverted_value} | Warning: {warning_img}")
         else:
+            logger.warning("No valid sensor data received from ultrasonic sensor")
             print("No valid sensor data received.")
         time.sleep(0.2)  # Changed from 0.2 to 1 second to reduce message usage
         
-threading.Thread(target=update_water_level_sensor, args=(blynk,), daemon=True).start()        
+threading.Thread(target=update_water_level_sensor, args=(blynk,), daemon=True).start()
+logger.info("Water level monitoring thread initialized")
 
 try:
+    logger.info("Entering main Blynk event loop")
     while True:
         blynk.run()
 except KeyboardInterrupt:
+    logger.info("Keyboard interrupt received, shutting down gracefully")
     if camera:
         camera.stop()
+    if streaming_active:
+        stop_camera_stream()
+        stop_gunicorn()
+    logger.info("Flood Control System stopped")
     print("Exiting cleanly.")
+except Exception as e:
+    logger.critical(f"Unexpected error in main loop: {e}", exc_info=True)
+finally:
+    logger.info("=" * 60)
+    logger.info("Flood Control System Shutdown Complete")
+    logger.info("=" * 60)
