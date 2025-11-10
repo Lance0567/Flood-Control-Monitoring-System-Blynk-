@@ -154,7 +154,7 @@ def stop_gunicorn():
         
 def start_camera_stream():
     try:
-        r = requests.post('http://127.0.0.1:8000/control_camera', json={'action': 'start'}, timeout=5)
+        r = requests.post('http://127.0.0.1:8000/control_camera', json={'action': 'start'}, timeout=2)
         logger.info(f"Camera stream start request: {r.text}")
         print(r.text)
     except Exception as e:
@@ -163,7 +163,7 @@ def start_camera_stream():
 
 def stop_camera_stream():
     try:
-        r = requests.post('http://127.0.0.1:8000/control_camera', json={'action': 'stop'}, timeout=5)
+        r = requests.post('http://127.0.0.1:8000/control_camera', json={'action': 'stop'}, timeout=2)
         logger.info(f"Camera stream stop request: {r.text}")
         print(r.text)
     except Exception as e:
@@ -174,7 +174,9 @@ def stop_camera_stream():
 def blynk_connected(*args, **kwargs):   # Accepts any arguments
     logger.info("Raspberry Pi connected to Blynk cloud successfully")
     print("/ Raspberry Pi Connected to Blynk")
-    blynk.set_property(1, "url", "https://pi.ustfloodcontrol.site/livecam")
+    blynk.virtual_write(0, 0)
+    blynk.virtual_write(1, 0)
+    blynk.virtual_write(5, 0)
 
 # Take photo with conflict detection and auto-retry
 @blynk.on("V0")
@@ -254,16 +256,20 @@ def on_v1(value):
     if val == 1:
         logger.info("V1: Live stream button pressed (ON)")
         print("V1: Live stream request received")
+        blynk.virtual_write(5, 0)
         streaming_active = True
         start_gunicorn()                  # This starts the Flask/Gunicorn process
         time.sleep(2)                     # Wait a little for Gunicorn to be live
         start_camera_stream()             # This tells Flask to create/start the camera
+        blynk.set_property(1, "url", "https://pi.ustfloodcontrol.site/livecam")
+        blynk.virtual_write(5, 1)
         logger.info("V1: Live stream started successfully")
         print("V1: Live stream started.")
     else:
         logger.info("V1: Live stream button pressed (OFF)")
         print("V1: Stop stream request received")
         streaming_active = False
+        blynk.virtual_write(5, 0)
         stop_camera_stream()              # This tells Flask to stop & release the camera
         stop_gunicorn()                   # This kills the Gunicorn server
         logger.info("V1: Live stream stopped successfully")
@@ -286,6 +292,11 @@ def update_water_level_sensor(blynk):
     BUFFER_SIZE = 5  # Average last 5 readings
     
     warning_names = {0: "Safe", 1: "Yellow", 2: "Orange", 3: "Red"}
+    event_codes = {
+        1: "caution",
+        2: "serious_situation", 
+        3: "critical_level"
+    }
     
     logger.info("Water level sensor monitoring thread started")
     
@@ -317,6 +328,20 @@ def update_water_level_sensor(blynk):
                 logger.warning(f"V4 (Warning): Alert level changed from {warning_names[last_warning]} to {warning_names[warning_img]} (distance: {dist}mm)")
                 last_warning = warning_img
                 print(f"Warning updated: {warning_img}")
+                
+                # Send notification when entering yellow, orange, or red warning
+                if warning_img in [1, 2, 3]:  # Yellow, Orange, or Red
+                    try:
+                        event_code = event_codes[warning_img]
+                        warning_level = warning_names[warning_img]
+                        message = f"Yawa Bridge is under {warning_level}"
+                        
+                        blynk.log_event(event_code, message)
+                        logger.warning(f"Notification sent: {event_code} - {message}")
+                        print(f"Notification sent: {warning_level}")
+                    except Exception as e:
+                        logger.error(f"Failed to send notification for warning level {warning_img}: {e}")
+                        print(f"Error sending notification: {e}")
                 
                 # Take photo when entering yellow, orange, or red warning
                 if warning_img in [1, 2, 3]:  # Yellow, Orange, or Red

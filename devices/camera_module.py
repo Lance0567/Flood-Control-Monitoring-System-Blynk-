@@ -5,7 +5,7 @@ from picamera2 import Picamera2
 import cv2
 
 class PiCameraModule:
-    def __init__(self, width=640, height=480):
+    def __init__(self, width=840, height=480):
         self.width = width
         self.height = height
         self.picam2 = Picamera2()

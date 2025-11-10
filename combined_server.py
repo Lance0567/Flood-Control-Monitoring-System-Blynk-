@@ -19,7 +19,7 @@ def control_camera():
     action = request.json.get('action')
     if action == 'start':
         if camera is None:
-            camera = PiCameraModule(width=640, height=480)
+            camera = PiCameraModule(width=1000, height=640)
             print("Camera started by API control.")
             return 'Camera started.'
         else:
@@ -44,7 +44,7 @@ def gen_frames():
                 _, buffer = cv2.imencode('.jpg', frame, [int(cv2.IMWRITE_JPEG_QUALITY), 45])
                 frame_bytes = buffer.tobytes()
             else:
-                black_frame = np.zeros((480, 640, 3), dtype=np.uint8)  # Adjust size as needed
+                black_frame = np.zeros((1000, 640, 3), dtype=np.uint8)  # Adjust size as needed
                 _, buffer = cv2.imencode('.jpg', black_frame, [int(cv2.IMWRITE_JPEG_QUALITY), 45])
                 frame_bytes = buffer.tobytes()
             yield (b'--frame\r\n'
