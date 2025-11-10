@@ -281,6 +281,10 @@ def update_water_level_sensor(blynk):
         3: None   # Red
     }
     
+     # Smoothing buffer for chart
+    distance_buffer = []
+    BUFFER_SIZE = 5  # Average last 5 readings
+    
     warning_names = {0: "Safe", 1: "Yellow", 2: "Orange", 3: "Red"}
     
     logger.info("Water level sensor monitoring thread started")
@@ -288,12 +292,18 @@ def update_water_level_sensor(blynk):
     while True:
         dist = read_distance()
         if dist is not None:
-            # Invert for gauge
-            inverted_value = 200 - dist
+            # Buffer for smoothing
+            distance_buffer.append(dist)
+            if len(distance_buffer) > BUFFER_SIZE:
+                distance_buffer.pop(0)
+            
+            # Use average for smoother chart
+            smoothed_dist = sum(distance_buffer) // len(distance_buffer)
+            
+            inverted_value = 200 - smoothed_dist
             inverted_value = max(0, min(200, inverted_value))
             
-            # Get warning with hysteresis (pass current state)
-            warning_img = map_distance_to_warning_image(dist, last_warning)
+            warning_img = map_distance_to_warning_image(smoothed_dist, last_warning)
             
             # Only send when values change
             if inverted_value != last_inverted:
