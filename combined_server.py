@@ -4,63 +4,92 @@ import os, threading, cv2, time
 import numpy as np
 from devices.camera_module import PiCameraModule
 
-
 PHOTO_DIR = "/home/jesse/Documents/photos"
 VIDEO_DIR = "/home/jesse/Documents/video"
 app = Flask(__name__)
 camera_lock = threading.Lock()
 camera = None
 streaming_active = False
-stream_thread = None  # to manage frame capture thread
 
 @app.route('/control_camera', methods=['POST'])
 def control_camera():
-    global camera
+    global camera, streaming_active
     action = request.json.get('action')
+    
     if action == 'start':
-        if camera is None:
-            camera = PiCameraModule(width=1000, height=640)
-            print("Camera started by API control.")
-            return 'Camera started.'
-        else:
-            return 'Camera already running.'
+        with camera_lock:
+            if camera is None:
+                try:
+                    # Give camera time to be fully released if previously used
+                    time.sleep(1)
+                    camera = PiCameraModule(width=1000, height=640)
+                    streaming_active = True
+                    print("Camera started by API control.")
+                    return 'Camera started.'
+                except Exception as e:
+                    print(f"Error starting camera: {e}")
+                    camera = None
+                    streaming_active = False
+                    return f'Error starting camera: {e}', 500
+            else:
+                return 'Camera already running.'
+                
     elif action == 'stop':
-        if camera is not None:
-            camera.stop()
-            camera = None
-            print("Camera stopped by API control.")
-            return 'Camera stopped.'
-        else:
-            return 'Camera already stopped.'
+        with camera_lock:
+            if camera is not None:
+                streaming_active = False  # Signal streaming to stop first
+                time.sleep(0.5)  # Give time for gen_frames to exit
+                try:
+                    camera.stop()
+                    camera = None
+                    print("Camera stopped by API control.")
+                    return 'Camera stopped.'
+                except Exception as e:
+                    print(f"Error stopping camera: {e}")
+                    camera = None
+                    return f'Camera stopped with warning: {e}'
+            else:
+                streaming_active = False
+                return 'Camera already stopped.'
+    
     return 'Unknown action.'
 
 def gen_frames():
-    global camera
-    while True:
+    global camera, streaming_active
+    
+    print("gen_frames: Stream generator started")
+    
+    while streaming_active:
         try:
-            # Lock camera when accessing (if you use a threading.Lock)
-            if camera is not None:
-                frame = camera.capture_frame()
-                _, buffer = cv2.imencode('.jpg', frame, [int(cv2.IMWRITE_JPEG_QUALITY), 45])
-                frame_bytes = buffer.tobytes()
-            else:
-                black_frame = np.zeros((1000, 640, 3), dtype=np.uint8)  # Adjust size as needed
-                _, buffer = cv2.imencode('.jpg', black_frame, [int(cv2.IMWRITE_JPEG_QUALITY), 45])
-                frame_bytes = buffer.tobytes()
+            with camera_lock:
+                if camera is not None and streaming_active:
+                    frame = camera.capture_frame()
+                    _, buffer = cv2.imencode('.jpg', frame, [int(cv2.IMWRITE_JPEG_QUALITY), 45])
+                    frame_bytes = buffer.tobytes()
+                else:
+                    # Camera not available, send black frame
+                    black_frame = np.zeros((480, 640, 3), dtype=np.uint8)
+                    _, buffer = cv2.imencode('.jpg', black_frame, [int(cv2.IMWRITE_JPEG_QUALITY), 45])
+                    frame_bytes = buffer.tobytes()
+            
             yield (b'--frame\r\n'
                    b'Content-Type: image/jpeg\r\n\r\n' + frame_bytes + b'\r\n')
-            time.sleep(0.05)  # Avoid 100% CPU
+            
+            time.sleep(0.03)  # ~30 fps
+            
+        except GeneratorExit:
+            print("gen_frames: Client disconnected")
+            break
         except Exception as e:
             print(f"Error in gen_frames: {e}")
             break
+    
+    print("gen_frames: Stream generator stopped")
 
 @app.route('/livecam')
 def livecam():
+    """Live camera stream endpoint"""
     return Response(gen_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
-
-@app.route('/photos_img/<path:filename>')
-def photos_img(filename):
-    return send_from_directory(PHOTO_DIR, filename)
 
 @app.route('/photo_list')
 def photo_list():
