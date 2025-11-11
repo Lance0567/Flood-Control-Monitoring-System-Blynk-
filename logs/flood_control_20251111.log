@@ -2642,3 +2642,624 @@ RuntimeError: Camera __init__ sequence did not complete.
 2025-11-11 05:58:25 - INFO - ============================================================
 2025-11-11 05:58:25 - INFO - Flood Control System Shutdown Complete
 2025-11-11 05:58:25 - INFO - ============================================================
+2025-11-11 14:12:55 - INFO - ============================================================
+2025-11-11 14:12:55 - INFO - Flood Control System Starting
+2025-11-11 14:12:55 - INFO - ============================================================
+2025-11-11 14:12:55 - INFO - UART serial port initialized successfully on /dev/serial0
+2025-11-11 14:12:55 - INFO - Water level sensor monitoring thread started
+2025-11-11 14:12:55 - INFO - Water level monitoring thread initialized
+2025-11-11 14:12:55 - INFO - Entering main Blynk event loop
+2025-11-11 14:12:56 - INFO - Raspberry Pi connected to Blynk cloud successfully
+2025-11-11 14:12:56 - INFO - V3 (Gauge): Water level updated to 0 (distance: 1127mm)
+2025-11-11 14:27:14 - INFO - V3 (Gauge): Water level updated to 149 (distance: 42mm)
+2025-11-11 14:27:14 - WARNING - V4 (Warning): Alert level changed from Safe to Orange (distance: 42mm)
+2025-11-11 14:27:14 - WARNING - Notification sent: serious_situation - Yawa Bridge is under Orange
+2025-11-11 14:27:14 - INFO - Auto-capture triggered for Orange warning level
+2025-11-11 14:27:18 - INFO - Warning photo captured successfully for Orange level
+2025-11-11 14:27:18 - INFO - V3 (Gauge): Water level updated to 160 (distance: 42mm)
+2025-11-11 14:27:18 - INFO - V3 (Gauge): Water level updated to 145 (distance: 116mm)
+2025-11-11 14:27:18 - INFO - V3 (Gauge): Water level updated to 0 (distance: 1127mm)
+2025-11-11 14:27:18 - WARNING - V4 (Warning): Alert level changed from Orange to Safe (distance: 1127mm)
+2025-11-11 16:23:38 - INFO - ============================================================
+2025-11-11 16:23:38 - INFO - Flood Control System Starting
+2025-11-11 16:23:38 - INFO - ============================================================
+2025-11-11 16:23:38 - INFO - UART serial port initialized successfully on /dev/serial0
+2025-11-11 16:23:38 - INFO - Water level sensor monitoring thread started
+2025-11-11 16:23:38 - INFO - Water level monitoring thread initialized
+2025-11-11 16:23:38 - INFO - Entering main Blynk event loop
+2025-11-11 16:23:38 - INFO - Raspberry Pi connected to Blynk cloud successfully
+2025-11-11 16:23:38 - INFO - Gunicorn server started with PID: 1807
+2025-11-11 16:23:38 - INFO - V3 (Gauge): Water level updated to 0 (distance: 1151mm)
+2025-11-11 16:25:24 - INFO - V1: Live stream button pressed (ON)
+2025-11-11 16:25:25 - INFO - Camera stream start request: Camera started.
+2025-11-11 16:25:25 - INFO - V1: Live stream started successfully
+2025-11-11 16:27:02 - INFO - V1: Live stream button pressed (OFF)
+2025-11-11 16:27:03 - INFO - Camera stream stop request: Camera stopped.
+2025-11-11 16:27:03 - INFO - V1: Live stream stopped successfully
+2025-11-11 16:27:08 - INFO - V1: Live stream button pressed (ON)
+2025-11-11 16:27:08 - INFO - Camera stream start request: <!doctype html>
+<html lang=en>
+<title>500 Internal Server Error</title>
+<h1>Internal Server Error</h1>
+<p>The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.</p>
+
+2025-11-11 16:27:08 - INFO - V1: Live stream started successfully
+2025-11-11 16:27:25 - INFO - V1: Live stream button pressed (OFF)
+2025-11-11 16:27:25 - INFO - Camera stream stop request: Camera already stopped.
+2025-11-11 16:27:25 - INFO - V1: Live stream stopped successfully
+2025-11-11 16:27:32 - WARNING - V0: Camera conflict detected - live stream is active
+2025-11-11 16:27:32 - INFO - V0: Stopping live stream to free camera...
+2025-11-11 16:27:32 - INFO - Camera stream stop request: Camera already stopped.
+2025-11-11 16:27:35 - INFO - Gunicorn server stopped successfully
+2025-11-11 16:27:35 - INFO - V0: Live stream stopped, V1 reset to OFF
+2025-11-11 16:27:38 - INFO - V0: Camera initialized and started
+2025-11-11 16:27:39 - INFO - V0: Photo captured successfully
+2025-11-11 16:27:40 - INFO - V0: Button auto-reset to OFF
+2025-11-11 16:27:43 - INFO - V1: Live stream button pressed (ON)
+2025-11-11 16:27:43 - ERROR - Error starting camera stream: HTTPConnectionPool(host='127.0.0.1', port=8000): Max retries exceeded with url: /control_camera (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7f7f019c70>: Failed to establish a new connection: [Errno 111] Connection refused'))
+2025-11-11 16:27:43 - INFO - V1: Live stream started successfully
+2025-11-11 16:28:41 - INFO - V3 (Gauge): Water level updated to 148 (distance: 54mm)
+2025-11-11 16:28:41 - WARNING - V4 (Warning): Alert level changed from Safe to Orange (distance: 54mm)
+2025-11-11 16:28:41 - WARNING - Notification sent: serious_situation - Yawa Bridge is under Orange
+2025-11-11 16:28:41 - INFO - Auto-capture triggered for Orange warning level
+2025-11-11 16:28:42 - INFO - Warning photo captured successfully for Orange level
+2025-11-11 16:28:42 - INFO - V3 (Gauge): Water level updated to 149 (distance: 51mm)
+2025-11-11 16:28:43 - INFO - V3 (Gauge): Water level updated to 147 (distance: 51mm)
+2025-11-11 16:28:43 - INFO - V3 (Gauge): Water level updated to 148 (distance: 52mm)
+2025-11-11 16:28:43 - INFO - V3 (Gauge): Water level updated to 0 (distance: 1147mm)
+2025-11-11 16:28:43 - WARNING - V4 (Warning): Alert level changed from Orange to Safe (distance: 1147mm)
+2025-11-11 16:28:50 - INFO - V1: Live stream button pressed (OFF)
+2025-11-11 16:28:50 - ERROR - Error stopping camera stream: HTTPConnectionPool(host='127.0.0.1', port=8000): Max retries exceeded with url: /control_camera (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7f7f028d10>: Failed to establish a new connection: [Errno 111] Connection refused'))
+2025-11-11 16:28:50 - INFO - V1: Live stream stopped successfully
+2025-11-11 16:29:54 - INFO - Keyboard interrupt received, shutting down gracefully
+2025-11-11 16:29:54 - INFO - Flood Control System stopped
+2025-11-11 16:29:54 - INFO - ============================================================
+2025-11-11 16:29:54 - INFO - Flood Control System Shutdown Complete
+2025-11-11 16:29:54 - INFO - ============================================================
+2025-11-11 16:30:02 - INFO - ============================================================
+2025-11-11 16:30:02 - INFO - Flood Control System Starting
+2025-11-11 16:30:02 - INFO - ============================================================
+2025-11-11 16:30:02 - INFO - UART serial port initialized successfully on /dev/serial0
+2025-11-11 16:30:02 - INFO - Water level sensor monitoring thread started
+2025-11-11 16:30:02 - INFO - Water level monitoring thread initialized
+2025-11-11 16:30:02 - INFO - Entering main Blynk event loop
+2025-11-11 16:30:02 - INFO - Raspberry Pi connected to Blynk cloud successfully
+2025-11-11 16:30:02 - INFO - Gunicorn server started with PID: 1848
+2025-11-11 16:30:03 - INFO - V3 (Gauge): Water level updated to 0 (distance: 1151mm)
+2025-11-11 16:30:38 - INFO - V1: Live stream button pressed (ON)
+2025-11-11 16:30:39 - INFO - Camera stream start request: Camera started.
+2025-11-11 16:30:39 - INFO - V1: Live stream started successfully
+2025-11-11 16:30:59 - INFO - V1: Live stream button pressed (OFF)
+2025-11-11 16:30:59 - INFO - Camera stream stop request: Camera stopped.
+2025-11-11 16:30:59 - INFO - V1: Live stream stopped successfully
+2025-11-11 16:31:21 - INFO - V1: Live stream button pressed (ON)
+2025-11-11 16:31:21 - INFO - Camera stream start request: <!doctype html>
+<html lang=en>
+<title>500 Internal Server Error</title>
+<h1>Internal Server Error</h1>
+<p>The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.</p>
+
+2025-11-11 16:31:21 - INFO - V1: Live stream started successfully
+2025-11-11 16:31:45 - INFO - V1: Live stream button pressed (OFF)
+2025-11-11 16:31:45 - INFO - Camera stream stop request: Camera already stopped.
+2025-11-11 16:31:45 - INFO - V1: Live stream stopped successfully
+2025-11-11 16:31:51 - WARNING - V0: Camera conflict detected - live stream is active
+2025-11-11 16:31:51 - INFO - V0: Stopping live stream to free camera...
+2025-11-11 16:31:51 - INFO - Camera stream stop request: Camera already stopped.
+2025-11-11 16:31:52 - INFO - V0: Live stream stopped, V1 reset to OFF
+2025-11-11 16:31:55 - ERROR - V0: Error taking photo: Camera __init__ sequence did not complete.
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/picamera2/picamera2.py", line 353, in __init__
+    self._open_camera()
+    ~~~~~~~~~~~~~~~~~^^
+  File "/usr/lib/python3/dist-packages/picamera2/picamera2.py", line 565, in _open_camera
+    self.camera.acquire()
+    ~~~~~~~~~~~~~~~~~~~^^
+RuntimeError: Failed to acquire camera: Device or resource busy
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jesse/Documents/FloodControl/main.py", line 212, in on_v0
+    camera = Picamera2()
+  File "/usr/lib/python3/dist-packages/picamera2/picamera2.py", line 365, in __init__
+    raise RuntimeError("Camera __init__ sequence did not complete.")
+RuntimeError: Camera __init__ sequence did not complete.
+2025-11-11 16:31:55 - INFO - V0: Button auto-reset to OFF
+2025-11-11 16:32:25 - INFO - Keyboard interrupt received, shutting down gracefully
+2025-11-11 16:32:25 - INFO - Flood Control System stopped
+2025-11-11 16:32:25 - INFO - ============================================================
+2025-11-11 16:32:25 - INFO - Flood Control System Shutdown Complete
+2025-11-11 16:32:25 - INFO - ============================================================
+2025-11-11 16:42:47 - INFO - ============================================================
+2025-11-11 16:42:47 - INFO - Flood Control System Starting
+2025-11-11 16:42:47 - INFO - ============================================================
+2025-11-11 16:42:47 - INFO - UART serial port initialized successfully on /dev/serial0
+2025-11-11 16:42:47 - INFO - Water level sensor monitoring thread started
+2025-11-11 16:42:47 - INFO - Water level monitoring thread initialized
+2025-11-11 16:42:47 - INFO - Entering main Blynk event loop
+2025-11-11 16:42:48 - INFO - Raspberry Pi connected to Blynk cloud successfully
+2025-11-11 16:42:48 - INFO - Gunicorn server started with PID: 1920
+2025-11-11 16:42:48 - INFO - V3 (Gauge): Water level updated to 0 (distance: 1148mm)
+2025-11-11 16:42:53 - INFO - V1: Live stream button pressed (ON)
+2025-11-11 16:42:54 - INFO - Gunicorn server stopped successfully
+2025-11-11 16:42:54 - INFO - Gunicorn server started with PID: 1924
+2025-11-11 16:42:58 - INFO - Camera stream start request: Camera started.
+2025-11-11 16:42:58 - INFO - V1: Live stream started successfully
+2025-11-11 16:43:06 - INFO - V1: Live stream button pressed (OFF)
+2025-11-11 16:43:07 - INFO - Camera stream stop request: Camera stopped.
+2025-11-11 16:43:07 - INFO - V1: Live stream stopped successfully
+2025-11-11 16:43:14 - INFO - V1: Live stream button pressed (ON)
+2025-11-11 16:43:15 - INFO - Gunicorn server stopped successfully
+2025-11-11 16:43:15 - INFO - Gunicorn server started with PID: 1935
+2025-11-11 16:43:19 - INFO - Camera stream start request: Camera started.
+2025-11-11 16:43:19 - INFO - V1: Live stream started successfully
+2025-11-11 16:43:37 - INFO - V1: Live stream button pressed (OFF)
+2025-11-11 16:43:37 - INFO - Camera stream stop request: Camera stopped.
+2025-11-11 16:43:37 - INFO - V1: Live stream stopped successfully
+2025-11-11 16:43:56 - INFO - V3 (Gauge): Water level updated to 38 (distance: 134mm)
+2025-11-11 16:43:57 - INFO - V3 (Gauge): Water level updated to 48 (distance: 128mm)
+2025-11-11 16:43:57 - INFO - V3 (Gauge): Water level updated to 55 (distance: 128mm)
+2025-11-11 16:43:57 - INFO - V3 (Gauge): Water level updated to 63 (distance: 129mm)
+2025-11-11 16:43:58 - INFO - V3 (Gauge): Water level updated to 71 (distance: 129mm)
+2025-11-11 16:43:58 - WARNING - V4 (Warning): Alert level changed from Safe to Yellow (distance: 129mm)
+2025-11-11 16:43:58 - WARNING - Notification sent: caution - Yawa Bridge is under Yellow
+2025-11-11 16:43:58 - INFO - Auto-capture triggered for Yellow warning level
+2025-11-11 16:43:58 - ERROR - Error capturing warning photo: Camera __init__ sequence did not complete.
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/picamera2/picamera2.py", line 353, in __init__
+    self._open_camera()
+    ~~~~~~~~~~~~~~~~~^^
+  File "/usr/lib/python3/dist-packages/picamera2/picamera2.py", line 565, in _open_camera
+    self.camera.acquire()
+    ~~~~~~~~~~~~~~~~~~~^^
+RuntimeError: Failed to acquire camera: Device or resource busy
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jesse/Documents/FloodControl/main.py", line 356, in update_water_level_sensor
+    capture_warning_photo(warning_img)
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/home/jesse/Documents/FloodControl/captured_photos.py", line 35, in capture_warning_photo
+    camera = Picamera2()
+  File "/usr/lib/python3/dist-packages/picamera2/picamera2.py", line 365, in __init__
+    raise RuntimeError("Camera __init__ sequence did not complete.")
+RuntimeError: Camera __init__ sequence did not complete.
+2025-11-11 16:43:59 - INFO - V3 (Gauge): Water level updated to 72 (distance: 128mm)
+2025-11-11 16:43:59 - INFO - V3 (Gauge): Water level updated to 71 (distance: 130mm)
+2025-11-11 16:44:00 - INFO - V3 (Gauge): Water level updated to 55 (distance: 209mm)
+2025-11-11 16:44:00 - INFO - V3 (Gauge): Water level updated to 0 (distance: 1152mm)
+2025-11-11 16:44:00 - WARNING - V4 (Warning): Alert level changed from Yellow to Safe (distance: 1152mm)
+2025-11-11 16:44:25 - INFO - V1: Live stream button pressed (ON)
+2025-11-11 16:44:27 - INFO - Gunicorn server stopped successfully
+2025-11-11 16:44:27 - INFO - Gunicorn server started with PID: 1953
+2025-11-11 16:44:30 - INFO - Camera stream start request: Camera started.
+2025-11-11 16:44:30 - INFO - V1: Live stream started successfully
+2025-11-11 16:45:27 - INFO - V1: Live stream button pressed (OFF)
+2025-11-11 16:45:27 - INFO - Camera stream stop request: Camera stopped.
+2025-11-11 16:45:27 - INFO - V1: Live stream stopped successfully
+2025-11-11 16:45:34 - INFO - V1: Live stream button pressed (ON)
+2025-11-11 16:45:37 - WARNING - Gunicorn did not stop gracefully, force killing
+2025-11-11 16:45:37 - INFO - Gunicorn server started with PID: 1967
+2025-11-11 16:45:41 - INFO - Camera stream start request: <!doctype html>
+<html lang=en>
+<title>500 Internal Server Error</title>
+<h1>Internal Server Error</h1>
+<p>The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.</p>
+
+2025-11-11 16:45:41 - INFO - V1: Live stream started successfully
+2025-11-11 16:45:55 - INFO - V1: Live stream button pressed (OFF)
+2025-11-11 16:45:55 - INFO - Camera stream stop request: Camera already stopped.
+2025-11-11 16:45:55 - INFO - V1: Live stream stopped successfully
+2025-11-11 16:46:01 - INFO - V1: Live stream button pressed (ON)
+2025-11-11 16:46:02 - INFO - Gunicorn server stopped successfully
+2025-11-11 16:46:02 - INFO - Gunicorn server started with PID: 1978
+2025-11-11 16:46:05 - INFO - Camera stream start request: Camera started.
+2025-11-11 16:46:05 - INFO - V1: Live stream started successfully
+2025-11-11 16:47:11 - INFO - V1: Live stream button pressed (OFF)
+2025-11-11 16:47:11 - INFO - Camera stream stop request: Camera stopped.
+2025-11-11 16:47:11 - INFO - V1: Live stream stopped successfully
+2025-11-11 16:47:20 - INFO - V1: Live stream button pressed (ON)
+2025-11-11 16:47:23 - WARNING - Gunicorn did not stop gracefully, force killing
+2025-11-11 16:47:23 - INFO - Gunicorn server started with PID: 1993
+2025-11-11 16:47:27 - INFO - Camera stream start request: <!doctype html>
+<html lang=en>
+<title>500 Internal Server Error</title>
+<h1>Internal Server Error</h1>
+<p>The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.</p>
+
+2025-11-11 16:47:27 - INFO - V1: Live stream started successfully
+2025-11-11 16:47:28 - INFO - Keyboard interrupt received, shutting down gracefully
+2025-11-11 16:47:29 - ERROR - Error stopping camera stream: ('Connection aborted.', ConnectionResetError(104, 'Connection reset by peer'))
+2025-11-11 16:47:29 - INFO - Gunicorn server stopped successfully
+2025-11-11 16:47:29 - INFO - Flood Control System stopped
+2025-11-11 16:47:29 - INFO - ============================================================
+2025-11-11 16:47:29 - INFO - Flood Control System Shutdown Complete
+2025-11-11 16:47:29 - INFO - ============================================================
+2025-11-11 16:56:55 - INFO - ============================================================
+2025-11-11 16:56:55 - INFO - Flood Control System Starting
+2025-11-11 16:56:55 - INFO - ============================================================
+2025-11-11 16:56:55 - INFO - UART serial port initialized successfully on /dev/serial0
+2025-11-11 16:56:55 - INFO - Water level sensor monitoring thread started
+2025-11-11 16:56:55 - INFO - Water level monitoring thread initialized
+2025-11-11 16:56:55 - INFO - Entering main Blynk event loop
+2025-11-11 16:56:55 - INFO - Raspberry Pi connected to Blynk cloud successfully
+2025-11-11 16:56:55 - INFO - Gunicorn server started with PID: 2022
+2025-11-11 16:56:56 - INFO - V3 (Gauge): Water level updated to 0 (distance: 1149mm)
+2025-11-11 16:57:01 - INFO - V1: Live stream button pressed (ON)
+2025-11-11 16:57:02 - INFO - Gunicorn server stopped successfully
+2025-11-11 16:57:02 - INFO - Gunicorn server started with PID: 2027
+2025-11-11 16:57:06 - ERROR - Error starting camera stream: HTTPConnectionPool(host='127.0.0.1', port=8000): Read timed out. (read timeout=2)
+2025-11-11 16:57:06 - INFO - V1: Live stream started successfully
+2025-11-11 16:57:40 - INFO - V1: Live stream button pressed (OFF)
+2025-11-11 16:57:41 - INFO - Camera stream stop request: Camera stopped.
+2025-11-11 16:57:41 - INFO - V1: Live stream stopped successfully
+2025-11-11 16:57:54 - INFO - V1: Live stream button pressed (ON)
+2025-11-11 16:57:55 - INFO - Gunicorn server stopped successfully
+2025-11-11 16:57:55 - INFO - Gunicorn server started with PID: 2040
+2025-11-11 16:57:59 - ERROR - Error starting camera stream: HTTPConnectionPool(host='127.0.0.1', port=8000): Read timed out. (read timeout=2)
+2025-11-11 16:57:59 - INFO - V1: Live stream started successfully
+2025-11-11 16:58:18 - INFO - V1: Live stream button pressed (OFF)
+2025-11-11 16:58:18 - INFO - Camera stream stop request: Camera stopped.
+2025-11-11 16:58:18 - INFO - V1: Live stream stopped successfully
+2025-11-11 16:58:29 - INFO - Keyboard interrupt received, shutting down gracefully
+2025-11-11 16:58:29 - INFO - Flood Control System stopped
+2025-11-11 16:58:29 - INFO - ============================================================
+2025-11-11 16:58:29 - INFO - Flood Control System Shutdown Complete
+2025-11-11 16:58:29 - INFO - ============================================================
+2025-11-11 16:59:28 - INFO - ============================================================
+2025-11-11 16:59:28 - INFO - Flood Control System Starting
+2025-11-11 16:59:28 - INFO - ============================================================
+2025-11-11 16:59:28 - INFO - UART serial port initialized successfully on /dev/serial0
+2025-11-11 16:59:28 - INFO - Water level sensor monitoring thread started
+2025-11-11 16:59:28 - INFO - Water level monitoring thread initialized
+2025-11-11 16:59:28 - INFO - Entering main Blynk event loop
+2025-11-11 16:59:28 - INFO - Raspberry Pi connected to Blynk cloud successfully
+2025-11-11 16:59:28 - INFO - Gunicorn server started with PID: 2061
+2025-11-11 16:59:29 - INFO - V3 (Gauge): Water level updated to 0 (distance: 1149mm)
+2025-11-11 16:59:32 - INFO - V1: Live stream button pressed (ON)
+2025-11-11 16:59:32 - INFO - Gunicorn server stopped successfully
+2025-11-11 16:59:32 - INFO - Gunicorn server started with PID: 2065
+2025-11-11 16:59:36 - ERROR - Error starting camera stream: HTTPConnectionPool(host='127.0.0.1', port=8000): Read timed out. (read timeout=2)
+2025-11-11 16:59:36 - INFO - V1: Live stream started successfully
+2025-11-11 17:00:24 - INFO - V1: Live stream button pressed (OFF)
+2025-11-11 17:00:25 - INFO - Camera stream stop request: Camera stopped.
+2025-11-11 17:00:25 - INFO - V1: Live stream stopped successfully
+2025-11-11 17:00:29 - INFO - V1: Live stream button pressed (ON)
+2025-11-11 17:00:31 - INFO - Gunicorn server stopped successfully
+2025-11-11 17:00:31 - INFO - Gunicorn server started with PID: 2082
+2025-11-11 17:00:35 - ERROR - Error starting camera stream: HTTPConnectionPool(host='127.0.0.1', port=8000): Read timed out. (read timeout=2)
+2025-11-11 17:00:35 - INFO - V1: Live stream started successfully
+2025-11-11 17:06:47 - INFO - Keyboard interrupt received, shutting down gracefully
+2025-11-11 17:06:49 - ERROR - Error stopping camera stream: HTTPConnectionPool(host='127.0.0.1', port=8000): Read timed out. (read timeout=2)
+2025-11-11 17:06:52 - WARNING - Gunicorn did not stop gracefully, force killing
+2025-11-11 17:06:52 - INFO - Flood Control System stopped
+2025-11-11 17:06:52 - INFO - ============================================================
+2025-11-11 17:06:52 - INFO - Flood Control System Shutdown Complete
+2025-11-11 17:06:52 - INFO - ============================================================
+2025-11-11 17:07:34 - INFO - ============================================================
+2025-11-11 17:07:34 - INFO - Flood Control System Starting
+2025-11-11 17:07:34 - INFO - ============================================================
+2025-11-11 17:07:39 - INFO - UART serial port initialized successfully on /dev/serial0
+2025-11-11 17:07:39 - INFO - Water level sensor monitoring thread started
+2025-11-11 17:07:39 - INFO - Water level monitoring thread initialized
+2025-11-11 17:07:39 - INFO - Entering main Blynk event loop
+2025-11-11 17:07:39 - INFO - Raspberry Pi connected to Blynk cloud successfully
+2025-11-11 17:07:39 - INFO - Gunicorn server started with PID: 2114
+2025-11-11 17:07:40 - INFO - V3 (Gauge): Water level updated to 0 (distance: 381mm)
+2025-11-11 17:07:47 - INFO - V1: Live stream button pressed (ON)
+2025-11-11 17:07:48 - INFO - Gunicorn server stopped successfully
+2025-11-11 17:07:48 - INFO - Gunicorn server started with PID: 2121
+2025-11-11 17:07:52 - ERROR - Error starting camera stream: HTTPConnectionPool(host='127.0.0.1', port=8000): Read timed out. (read timeout=2)
+2025-11-11 17:07:54 - INFO - V1: Video widget URL refreshed
+2025-11-11 17:07:54 - INFO - V1: Camera stream started successfully
+2025-11-11 17:08:29 - INFO - V1: Live stream button pressed (OFF)
+2025-11-11 17:08:30 - INFO - Camera stream stop request: Camera stopped.
+2025-11-11 17:08:30 - INFO - V1: Live stream stopped successfully
+2025-11-11 17:08:34 - INFO - V1: Live stream button pressed (ON)
+2025-11-11 17:08:35 - INFO - Gunicorn server stopped successfully
+2025-11-11 17:08:35 - INFO - Gunicorn server started with PID: 2186
+2025-11-11 17:08:39 - ERROR - Error starting camera stream: HTTPConnectionPool(host='127.0.0.1', port=8000): Read timed out. (read timeout=2)
+2025-11-11 17:08:41 - INFO - V1: Video widget URL refreshed
+2025-11-11 17:08:41 - INFO - V1: Camera stream started successfully
+2025-11-11 17:09:08 - INFO - V1: Live stream button pressed (OFF)
+2025-11-11 17:09:08 - INFO - Camera stream stop request: Camera stopped.
+2025-11-11 17:09:08 - INFO - V1: Live stream stopped successfully
+2025-11-11 17:10:00 - INFO - Keyboard interrupt received, shutting down gracefully
+2025-11-11 17:10:00 - INFO - Flood Control System stopped
+2025-11-11 17:10:00 - INFO - ============================================================
+2025-11-11 17:10:00 - INFO - Flood Control System Shutdown Complete
+2025-11-11 17:10:00 - INFO - ============================================================
+2025-11-11 17:11:10 - INFO - ============================================================
+2025-11-11 17:11:10 - INFO - Flood Control System Starting
+2025-11-11 17:11:10 - INFO - ============================================================
+2025-11-11 17:11:10 - INFO - UART serial port initialized successfully on /dev/serial0
+2025-11-11 17:11:10 - INFO - Water level sensor monitoring thread started
+2025-11-11 17:11:10 - INFO - Water level monitoring thread initialized
+2025-11-11 17:11:10 - INFO - Entering main Blynk event loop
+2025-11-11 17:11:10 - INFO - Raspberry Pi connected to Blynk cloud successfully
+2025-11-11 17:11:10 - INFO - Gunicorn server started with PID: 2204
+2025-11-11 17:11:10 - INFO - V3 (Gauge): Water level updated to 0 (distance: 1150mm)
+2025-11-11 17:11:16 - INFO - V1: Live stream button pressed (ON)
+2025-11-11 17:11:17 - INFO - Gunicorn server stopped successfully
+2025-11-11 17:11:17 - INFO - Gunicorn server started with PID: 2209
+2025-11-11 17:11:21 - ERROR - Error starting camera stream: HTTPConnectionPool(host='127.0.0.1', port=8000): Read timed out. (read timeout=2)
+2025-11-11 17:11:23 - INFO - V1: Video widget URL refreshed
+2025-11-11 17:11:23 - INFO - V1: Camera stream started successfully
+2025-11-11 17:11:27 - INFO - V1: Live stream button pressed (OFF)
+2025-11-11 17:11:28 - INFO - Camera stream stop request: Camera stopped.
+2025-11-11 17:11:28 - INFO - V1: Live stream stopped successfully
+2025-11-11 17:11:37 - INFO - V1: Live stream button pressed (ON)
+2025-11-11 17:11:38 - INFO - Gunicorn server stopped successfully
+2025-11-11 17:11:38 - INFO - Gunicorn server started with PID: 2222
+2025-11-11 17:11:42 - ERROR - Error starting camera stream: HTTPConnectionPool(host='127.0.0.1', port=8000): Read timed out. (read timeout=2)
+2025-11-11 17:11:44 - INFO - V1: Video widget URL refreshed
+2025-11-11 17:11:44 - INFO - V1: Camera stream started successfully
+2025-11-11 17:12:28 - INFO - V1: Live stream button pressed (OFF)
+2025-11-11 17:12:29 - INFO - Camera stream stop request: Camera stopped.
+2025-11-11 17:12:29 - INFO - V1: Live stream stopped successfully
+2025-11-11 17:12:34 - INFO - Keyboard interrupt received, shutting down gracefully
+2025-11-11 17:12:34 - INFO - Flood Control System stopped
+2025-11-11 17:12:34 - INFO - ============================================================
+2025-11-11 17:12:34 - INFO - Flood Control System Shutdown Complete
+2025-11-11 17:12:34 - INFO - ============================================================
+2025-11-11 17:13:23 - INFO - ============================================================
+2025-11-11 17:13:23 - INFO - Flood Control System Starting
+2025-11-11 17:13:23 - INFO - ============================================================
+2025-11-11 17:13:23 - INFO - UART serial port initialized successfully on /dev/serial0
+2025-11-11 17:13:23 - INFO - Water level sensor monitoring thread started
+2025-11-11 17:13:23 - INFO - Water level monitoring thread initialized
+2025-11-11 17:13:23 - INFO - Entering main Blynk event loop
+2025-11-11 17:13:23 - INFO - Raspberry Pi connected to Blynk cloud successfully
+2025-11-11 17:13:23 - INFO - Gunicorn server started with PID: 2244
+2025-11-11 17:13:23 - INFO - V3 (Gauge): Water level updated to 0 (distance: 1149mm)
+2025-11-11 17:13:54 - INFO - V1: Live stream button pressed (ON)
+2025-11-11 17:13:55 - INFO - Camera stream start request: Camera started.
+2025-11-11 17:13:57 - INFO - V1: Video widget URL refreshed
+2025-11-11 17:13:57 - INFO - V1: Camera stream started successfully
+2025-11-11 17:14:07 - INFO - V1: Live stream button pressed (OFF)
+2025-11-11 17:14:08 - INFO - Camera stream stop request: Camera stopped.
+2025-11-11 17:14:08 - INFO - V1: Live stream stopped successfully
+2025-11-11 17:14:14 - INFO - V1: Live stream button pressed (ON)
+2025-11-11 17:14:15 - INFO - Camera stream start request: Error starting camera: Camera __init__ sequence did not complete.
+2025-11-11 17:14:17 - INFO - V1: Video widget URL refreshed
+2025-11-11 17:14:17 - INFO - V1: Camera stream started successfully
+2025-11-11 17:14:45 - INFO - V1: Live stream button pressed (OFF)
+2025-11-11 17:14:45 - INFO - Camera stream stop request: Camera already stopped.
+2025-11-11 17:14:45 - INFO - V1: Live stream stopped successfully
+2025-11-11 17:14:51 - INFO - V1: Live stream button pressed (ON)
+2025-11-11 17:14:52 - INFO - Camera stream start request: Error starting camera: Camera __init__ sequence did not complete.
+2025-11-11 17:14:54 - INFO - V1: Video widget URL refreshed
+2025-11-11 17:14:54 - INFO - V1: Camera stream started successfully
+2025-11-11 17:15:44 - INFO - V1: Live stream button pressed (OFF)
+2025-11-11 17:15:44 - INFO - Camera stream stop request: Camera already stopped.
+2025-11-11 17:15:44 - INFO - V1: Live stream stopped successfully
+2025-11-11 17:15:50 - INFO - Keyboard interrupt received, shutting down gracefully
+2025-11-11 17:15:50 - INFO - Flood Control System stopped
+2025-11-11 17:15:50 - INFO - ============================================================
+2025-11-11 17:15:50 - INFO - Flood Control System Shutdown Complete
+2025-11-11 17:15:50 - INFO - ============================================================
+2025-11-11 17:16:30 - INFO - ============================================================
+2025-11-11 17:16:30 - INFO - Flood Control System Starting
+2025-11-11 17:16:30 - INFO - ============================================================
+2025-11-11 17:16:36 - INFO - UART serial port initialized successfully on /dev/serial0
+2025-11-11 17:16:36 - INFO - Water level sensor monitoring thread started
+2025-11-11 17:16:36 - INFO - Water level monitoring thread initialized
+2025-11-11 17:16:36 - INFO - Entering main Blynk event loop
+2025-11-11 17:16:36 - INFO - Raspberry Pi connected to Blynk cloud successfully
+2025-11-11 17:16:36 - INFO - Gunicorn server started with PID: 2278
+2025-11-11 17:16:36 - INFO - V3 (Gauge): Water level updated to 0 (distance: 1150mm)
+2025-11-11 17:16:39 - INFO - Keyboard interrupt received, shutting down gracefully
+2025-11-11 17:16:39 - INFO - Flood Control System stopped
+2025-11-11 17:16:39 - INFO - =====
+2025-11-11 17:16:39 - INFO - Flood Control System Shutdown Complete
+2025-11-11 17:16:39 - INFO - =====
+2025-11-11 17:21:03 - INFO - ============================================================
+2025-11-11 17:21:03 - INFO - Flood Control System Starting
+2025-11-11 17:21:03 - INFO - ============================================================
+2025-11-11 17:21:04 - INFO - UART serial port initialized successfully on /dev/serial0
+2025-11-11 17:21:04 - INFO - Water level sensor monitoring thread started
+2025-11-11 17:21:04 - INFO - Water level monitoring thread initialized
+2025-11-11 17:21:04 - INFO - Entering main Blynk event loop
+2025-11-11 17:21:04 - INFO - Raspberry Pi connected to Blynk cloud successfully
+2025-11-11 17:21:04 - INFO - Gunicorn server started with PID: 2301
+2025-11-11 17:21:04 - INFO - V3 (Gauge): Water level updated to 0 (distance: 1154mm)
+2025-11-11 17:21:08 - INFO - Keyboard interrupt received, shutting down gracefully
+2025-11-11 17:21:08 - INFO - Flood Control System stopped
+2025-11-11 17:21:08 - INFO - =====
+2025-11-11 17:21:08 - INFO - Flood Control System Shutdown Complete
+2025-11-11 17:21:08 - INFO - =====
+2025-11-11 17:22:21 - INFO - ============================================================
+2025-11-11 17:22:21 - INFO - Flood Control System Starting
+2025-11-11 17:22:21 - INFO - ============================================================
+2025-11-11 17:22:21 - INFO - UART serial port initialized successfully on /dev/serial0
+2025-11-11 17:22:21 - INFO - Water level sensor monitoring thread started
+2025-11-11 17:22:21 - INFO - Water level monitoring thread initialized
+2025-11-11 17:22:21 - INFO - Entering main Blynk event loop
+2025-11-11 17:22:21 - INFO - Raspberry Pi connected to Blynk cloud successfully
+2025-11-11 17:22:21 - INFO - Gunicorn server started with PID: 2310
+2025-11-11 17:22:21 - INFO - V3 (Gauge): Water level updated to 0 (distance: 1154mm)
+2025-11-11 17:22:25 - INFO - Keyboard interrupt received, shutting down gracefully
+2025-11-11 17:22:25 - INFO - Stopping Gunicorn server...
+2025-11-11 17:22:25 - INFO - Gunicorn server stopped
+2025-11-11 17:22:25 - INFO - Flood Control System stopped
+2025-11-11 17:22:25 - INFO - =====
+2025-11-11 17:22:25 - INFO - Flood Control System Shutdown Complete
+2025-11-11 17:22:25 - INFO - =====
+2025-11-11 17:36:34 - INFO - ============================================================
+2025-11-11 17:36:34 - INFO - Flood Control System Starting
+2025-11-11 17:36:34 - INFO - ============================================================
+2025-11-11 17:36:35 - INFO - UART serial port initialized successfully on /dev/serial0
+2025-11-11 17:36:35 - INFO - Water level sensor monitoring thread started
+2025-11-11 17:36:35 - INFO - Water level monitoring thread initialized
+2025-11-11 17:36:35 - INFO - Entering main Blynk event loop
+2025-11-11 17:36:35 - INFO - Raspberry Pi connected to Blynk cloud successfully
+2025-11-11 17:36:35 - INFO - Gunicorn server started with PID: 2343
+2025-11-11 17:36:36 - INFO - V3 (Gauge): Water level updated to 0 (distance: 1146mm)
+2025-11-11 17:37:33 - INFO - V1: Live stream button pressed (ON)
+2025-11-11 17:37:33 - INFO - Stopping Gunicorn server...
+2025-11-11 17:37:34 - INFO - Gunicorn server stopped
+2025-11-11 17:37:34 - INFO - Gunicorn server started with PID: 2347
+2025-11-11 17:37:38 - ERROR - Error starting camera stream: HTTPConnectionPool(host='127.0.0.1', port=8000): Read timed out. (read timeout=2)
+2025-11-11 17:37:39 - INFO - V5: Video stream widget refreshed with timestamp: 1762853859
+2025-11-11 17:37:39 - INFO - V1: Camera stream started successfully
+2025-11-11 17:38:15 - INFO - Keyboard interrupt received, shutting down gracefully
+2025-11-11 17:38:15 - INFO - Stopping Gunicorn server...
+2025-11-11 17:38:15 - INFO - Gunicorn server stopped
+2025-11-11 17:38:16 - ERROR - Error stopping camera stream: ('Connection aborted.', ConnectionResetError(104, 'Connection reset by peer'))
+2025-11-11 17:38:16 - INFO - Flood Control System stopped
+2025-11-11 17:38:16 - INFO - =====
+2025-11-11 17:38:16 - INFO - Flood Control System Shutdown Complete
+2025-11-11 17:38:16 - INFO - =====
+2025-11-11 17:38:23 - INFO - ============================================================
+2025-11-11 17:38:23 - INFO - Flood Control System Starting
+2025-11-11 17:38:23 - INFO - ============================================================
+2025-11-11 17:38:23 - INFO - UART serial port initialized successfully on /dev/serial0
+2025-11-11 17:38:23 - INFO - Water level sensor monitoring thread started
+2025-11-11 17:38:23 - INFO - Water level monitoring thread initialized
+2025-11-11 17:38:23 - INFO - Entering main Blynk event loop
+2025-11-11 17:38:23 - INFO - Raspberry Pi connected to Blynk cloud successfully
+2025-11-11 17:38:23 - INFO - Gunicorn server started with PID: 2364
+2025-11-11 17:38:23 - INFO - V3 (Gauge): Water level updated to 0 (distance: 1150mm)
+2025-11-11 17:38:33 - INFO - V1: Live stream button pressed (ON)
+2025-11-11 17:38:33 - INFO - Stopping Gunicorn server...
+2025-11-11 17:38:33 - INFO - Gunicorn server stopped
+2025-11-11 17:38:33 - INFO - Gunicorn server started with PID: 2368
+2025-11-11 17:38:37 - ERROR - Error starting camera stream: HTTPConnectionPool(host='127.0.0.1', port=8000): Read timed out. (read timeout=2)
+2025-11-11 17:38:39 - INFO - V5: Video stream widget refreshed
+2025-11-11 17:38:39 - INFO - V1: Live stream started
+2025-11-11 17:38:51 - INFO - V1: Live stream button pressed (OFF)
+2025-11-11 17:38:52 - INFO - Camera stream stop request: Camera stopped.
+2025-11-11 17:38:52 - INFO - V1: Live stream stopped successfully
+2025-11-11 17:38:55 - INFO - V1: Live stream button pressed (ON)
+2025-11-11 17:38:55 - INFO - Stopping Gunicorn server...
+2025-11-11 17:38:55 - INFO - Gunicorn server stopped
+2025-11-11 17:38:55 - INFO - Gunicorn server started with PID: 2379
+2025-11-11 17:38:59 - ERROR - Error starting camera stream: HTTPConnectionPool(host='127.0.0.1', port=8000): Read timed out. (read timeout=2)
+2025-11-11 17:39:01 - INFO - V5: Video stream widget refreshed
+2025-11-11 17:39:01 - INFO - V1: Live stream started
+2025-11-11 17:40:12 - INFO - V1: Live stream button pressed (OFF)
+2025-11-11 17:40:12 - INFO - Camera stream stop request: Camera stopped.
+2025-11-11 17:40:12 - INFO - V1: Live stream stopped successfully
+2025-11-11 17:40:35 - INFO - Keyboard interrupt received, shutting down gracefully
+2025-11-11 17:40:35 - INFO - Stopping Gunicorn server...
+2025-11-11 17:40:35 - INFO - Gunicorn server stopped
+2025-11-11 17:40:35 - INFO - Flood Control System stopped
+2025-11-11 17:40:35 - INFO - =====
+2025-11-11 17:40:35 - INFO - Flood Control System Shutdown Complete
+2025-11-11 17:40:35 - INFO - =====
+2025-11-11 17:40:48 - INFO - ============================================================
+2025-11-11 17:40:48 - INFO - Flood Control System Starting
+2025-11-11 17:40:48 - INFO - ============================================================
+2025-11-11 17:40:49 - INFO - UART serial port initialized successfully on /dev/serial0
+2025-11-11 17:40:49 - INFO - Water level sensor monitoring thread started
+2025-11-11 17:40:49 - INFO - Water level monitoring thread initialized
+2025-11-11 17:40:49 - INFO - Entering main Blynk event loop
+2025-11-11 17:40:49 - INFO - Raspberry Pi connected to Blynk cloud successfully
+2025-11-11 17:40:49 - INFO - Gunicorn server started with PID: 2402
+2025-11-11 17:40:49 - INFO - V3 (Gauge): Water level updated to 0 (distance: 1147mm)
+2025-11-11 17:40:57 - INFO - V1: Live stream button pressed (ON)
+2025-11-11 17:40:57 - INFO - Stopping Gunicorn server...
+2025-11-11 17:40:57 - INFO - Gunicorn server stopped
+2025-11-11 17:40:57 - INFO - Gunicorn server started with PID: 2406
+2025-11-11 17:41:01 - ERROR - Error starting camera stream: HTTPConnectionPool(host='127.0.0.1', port=8000): Read timed out. (read timeout=2)
+2025-11-11 17:41:03 - INFO - V5: Video stream widget refreshed
+2025-11-11 17:41:03 - INFO - V1: Live stream started
+2025-11-11 17:42:18 - INFO - V1: Live stream button pressed (OFF)
+2025-11-11 17:42:18 - INFO - Camera stream stop request: Camera stopped.
+2025-11-11 17:42:18 - INFO - V1: Live stream stopped successfully
+2025-11-11 17:42:26 - INFO - V1: Live stream button pressed (ON)
+2025-11-11 17:42:26 - INFO - Stopping Gunicorn server...
+2025-11-11 17:42:26 - INFO - Gunicorn server stopped
+2025-11-11 17:42:26 - INFO - Gunicorn server started with PID: 2418
+2025-11-11 17:42:30 - ERROR - Error starting camera stream: HTTPConnectionPool(host='127.0.0.1', port=8000): Read timed out. (read timeout=2)
+2025-11-11 17:42:32 - INFO - V5: Video stream widget refreshed
+2025-11-11 17:42:32 - INFO - V1: Live stream started
+2025-11-11 17:42:53 - INFO - V1: Live stream button pressed (OFF)
+2025-11-11 17:42:54 - INFO - Camera stream stop request: Camera stopped.
+2025-11-11 17:42:54 - INFO - V1: Live stream stopped successfully
+2025-11-11 17:42:58 - INFO - V1: Live stream button pressed (ON)
+2025-11-11 17:42:58 - INFO - Stopping Gunicorn server...
+2025-11-11 17:42:58 - INFO - Gunicorn server stopped
+2025-11-11 17:42:58 - INFO - Gunicorn server started with PID: 2430
+2025-11-11 17:43:02 - ERROR - Error starting camera stream: HTTPConnectionPool(host='127.0.0.1', port=8000): Read timed out. (read timeout=2)
+2025-11-11 17:43:05 - INFO - V5: Video stream widget refreshed
+2025-11-11 17:43:05 - INFO - V1: Live stream started
+2025-11-11 17:45:17 - INFO - V3 (Gauge): Water level updated to 30 (distance: 157mm)
+2025-11-11 17:45:17 - INFO - V3 (Gauge): Water level updated to 35 (distance: 151mm)
+2025-11-11 17:45:17 - INFO - V3 (Gauge): Water level updated to 36 (distance: 169mm)
+2025-11-11 17:45:18 - INFO - V3 (Gauge): Water level updated to 28 (distance: 205mm)
+2025-11-11 17:45:18 - INFO - V3 (Gauge): Water level updated to 29 (distance: 176mm)
+2025-11-11 17:45:18 - INFO - V3 (Gauge): Water level updated to 19 (distance: 206mm)
+2025-11-11 17:45:19 - INFO - V3 (Gauge): Water level updated to 6 (distance: 216mm)
+2025-11-11 17:45:19 - INFO - V3 (Gauge): Water level updated to 0 (distance: 223mm)
+2025-11-11 17:45:20 - INFO - V3 (Gauge): Water level updated to 11 (distance: 150mm)
+2025-11-11 17:45:20 - INFO - V3 (Gauge): Water level updated to 29 (distance: 134mm)
+2025-11-11 17:45:21 - INFO - V3 (Gauge): Water level updated to 48 (distance: 130mm)
+2025-11-11 17:45:21 - INFO - V3 (Gauge): Water level updated to 59 (distance: 128mm)
+2025-11-11 17:45:21 - INFO - V3 (Gauge): Water level updated to 62 (distance: 149mm)
+2025-11-11 17:45:21 - INFO - V3 (Gauge): Water level updated to 0 (distance: 1147mm)
+2025-11-11 17:45:44 - INFO - V3 (Gauge): Water level updated to 10 (distance: 141mm)
+2025-11-11 17:45:44 - INFO - V3 (Gauge): Water level updated to 54 (distance: 134mm)
+2025-11-11 17:45:45 - INFO - V3 (Gauge): Water level updated to 57 (distance: 140mm)
+2025-11-11 17:45:45 - INFO - V3 (Gauge): Water level updated to 59 (distance: 144mm)
+2025-11-11 17:45:45 - INFO - V3 (Gauge): Water level updated to 58 (distance: 153mm)
+2025-11-11 17:45:45 - INFO - V3 (Gauge): Water level updated to 55 (distance: 157mm)
+2025-11-11 17:45:46 - INFO - V3 (Gauge): Water level updated to 47 (distance: 174mm)
+2025-11-11 17:45:46 - INFO - V3 (Gauge): Water level updated to 42 (distance: 165mm)
+2025-11-11 17:45:46 - INFO - V3 (Gauge): Water level updated to 38 (distance: 164mm)
+2025-11-11 17:45:47 - INFO - V3 (Gauge): Water level updated to 36 (distance: 163mm)
+2025-11-11 17:45:47 - INFO - V3 (Gauge): Water level updated to 35 (distance: 159mm)
+2025-11-11 17:45:47 - INFO - V3 (Gauge): Water level updated to 39 (distance: 158mm)
+2025-11-11 17:45:48 - INFO - V3 (Gauge): Water level updated to 38 (distance: 169mm)
+2025-11-11 17:45:48 - INFO - V3 (Gauge): Water level updated to 39 (distance: 158mm)
+2025-11-11 17:45:48 - INFO - V3 (Gauge): Water level updated to 41 (distance: 150mm)
+2025-11-11 17:45:49 - INFO - V3 (Gauge): Water level updated to 43 (distance: 147mm)
+2025-11-11 17:45:49 - INFO - V3 (Gauge): Water level updated to 47 (distance: 145mm)
+2025-11-11 17:45:49 - INFO - V3 (Gauge): Water level updated to 53 (distance: 135mm)
+2025-11-11 17:45:49 - INFO - V3 (Gauge): Water level updated to 60 (distance: 126mm)
+2025-11-11 17:45:50 - INFO - V3 (Gauge): Water level updated to 65 (distance: 126mm)
+2025-11-11 17:45:50 - WARNING - V4 (Warning): Alert level changed from Safe to Yellow (distance: 126mm)
+2025-11-11 17:45:50 - WARNING - Notification sent: caution - Yawa Bridge is under Yellow
+2025-11-11 17:45:50 - INFO - Auto-capture triggered for Yellow warning level
+2025-11-11 17:45:50 - ERROR - Error capturing warning photo: Camera __init__ sequence did not complete.
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/picamera2/picamera2.py", line 353, in __init__
+    self._open_camera()
+    ~~~~~~~~~~~~~~~~~^^
+  File "/usr/lib/python3/dist-packages/picamera2/picamera2.py", line 565, in _open_camera
+    self.camera.acquire()
+    ~~~~~~~~~~~~~~~~~~~^^
+RuntimeError: Failed to acquire camera: Device or resource busy
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jesse/Documents/FloodControl/main.py", line 373, in update_water_level_sensor
+    capture_warning_photo(warning_img)
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/home/jesse/Documents/FloodControl/captured_photos.py", line 35, in capture_warning_photo
+    camera = Picamera2()
+  File "/usr/lib/python3/dist-packages/picamera2/picamera2.py", line 365, in __init__
+    raise RuntimeError("Camera __init__ sequence did not complete.")
+RuntimeError: Camera __init__ sequence did not complete.
+2025-11-11 17:45:51 - INFO - V3 (Gauge): Water level updated to 69 (distance: 124mm)
+2025-11-11 17:45:51 - INFO - V3 (Gauge): Water level updated to 67 (distance: 158mm)
+2025-11-11 17:45:51 - INFO - V3 (Gauge): Water level updated to 60 (distance: 167mm)
+2025-11-11 17:45:51 - INFO - V3 (Gauge): Water level updated to 49 (distance: 180mm)
+2025-11-11 17:45:51 - WARNING - V4 (Warning): Alert level changed from Yellow to Safe (distance: 180mm)
+2025-11-11 17:45:52 - INFO - V3 (Gauge): Water level updated to 37 (distance: 189mm)
+2025-11-11 17:45:52 - INFO - V3 (Gauge): Water level updated to 22 (distance: 196mm)
+2025-11-11 17:45:52 - INFO - V3 (Gauge): Water level updated to 13 (distance: 206mm)
+2025-11-11 17:45:52 - INFO - V3 (Gauge): Water level updated to 0 (distance: 230mm)
+2025-11-11 17:46:13 - INFO - V1: Live stream button pressed (OFF)
+2025-11-11 17:46:14 - INFO - Camera stream stop request: Camera stopped.
+2025-11-11 17:46:14 - INFO - V1: Live stream stopped successfully
+2025-11-11 17:47:26 - INFO - Keyboard interrupt received, shutting down gracefully
+2025-11-11 17:47:26 - INFO - Stopping Gunicorn server...
+2025-11-11 17:47:26 - INFO - Gunicorn server stopped
+2025-11-11 17:47:26 - INFO - Flood Control System stopped
+2025-11-11 17:47:26 - INFO - =====
+2025-11-11 17:47:26 - INFO - Flood Control System Shutdown Complete
+2025-11-11 17:47:26 - INFO - =====

@@ -136,21 +136,23 @@ def start_gunicorn():
             logger.error(f"Failed to start Gunicorn: {e}")
 
 def stop_gunicorn():
+    """Stop Gunicorn server at system shutdown"""
     global gunicorn_process
     if gunicorn_process and gunicorn_process.poll() is None:
+        logger.info("Stopping Gunicorn server...")
+        print("Stopping Gunicorn...")
+        
+        # Use kill() instead of terminate() for faster shutdown
+        gunicorn_process.kill()
+        
         try:
-            gunicorn_process.terminate()
-            gunicorn_process.wait(timeout=3)
-            logger.info("Gunicorn server stopped successfully")
-            print("Stopped Gunicorn.")
+            gunicorn_process.wait(timeout=1)  # Shorter timeout
+            logger.info("Gunicorn server stopped")
         except subprocess.TimeoutExpired:
-            logger.warning("Gunicorn did not stop gracefully, force killing")
-            print("Force killing Gunicorn process.")
-            gunicorn_process.kill()
+            logger.warning("Gunicorn did not stop in time, forcing...")
+            # Already killed, so just continue
+        
         gunicorn_process = None
-    else:
-        logger.debug("Gunicorn was not running")
-        print("Gunicorn not running.")
         
 def start_camera_stream():
     try:
@@ -174,9 +176,9 @@ def stop_camera_stream():
 def blynk_connected(*args, **kwargs):   # Accepts any arguments
     logger.info("Raspberry Pi connected to Blynk cloud successfully")
     print("/ Raspberry Pi Connected to Blynk")
+    start_gunicorn()                  # This starts the Flask/Gunicorn process
     blynk.virtual_write(0, 0)
     blynk.virtual_write(1, 0)
-    blynk.virtual_write(5, 0)
 
 # Take photo with conflict detection and auto-retry
 @blynk.on("V0")
@@ -196,7 +198,7 @@ def on_v0(value):
             # Stop the live stream
             stop_camera_stream()
             time.sleep(1)  # Wait for camera to release
-            stop_gunicorn()
+#             stop_gunicorn()
             streaming_active = False
             
             # Turn off V1 in Blynk app
@@ -256,22 +258,38 @@ def on_v1(value):
     if val == 1:
         logger.info("V1: Live stream button pressed (ON)")
         print("V1: Live stream request received")
-        blynk.virtual_write(5, 0)
+        stop_gunicorn()
         streaming_active = True
-        start_gunicorn()                  # This starts the Flask/Gunicorn process
-        time.sleep(2)                     # Wait a little for Gunicorn to be live
+        start_gunicorn()
+        time.sleep(2)
         start_camera_stream()             # This tells Flask to create/start the camera
-        blynk.set_property(1, "url", "https://pi.ustfloodcontrol.site/livecam")
-        blynk.virtual_write(5, 1)
-        logger.info("V1: Live stream started successfully")
+        
+        # Wait for camera to initialize
+        time.sleep(2)
+        
+         # Try multiple methods to refresh video widget
+        try:
+            # Method 1: Update URL with timestamp
+            timestamp = int(time.time())
+            blynk.set_property(5, "url", f"https://pi.ustfloodcontrol.site/livecam?t={timestamp}")
+            
+            # Method 2: Toggle widget (turn off then on)
+            blynk.virtual_write(5, 0)
+            time.sleep(0.5)
+            blynk.virtual_write(5, 1)
+            
+            logger.info("V5: Video stream widget refreshed")
+            print("V5: Video stream widget refreshed")
+        except Exception as e:
+            logger.error(f"V5: Failed to refresh: {e}")
+        
+        logger.info("V1: Live stream started")
         print("V1: Live stream started.")
     else:
         logger.info("V1: Live stream button pressed (OFF)")
         print("V1: Stop stream request received")
         streaming_active = False
-        blynk.virtual_write(5, 0)
         stop_camera_stream()              # This tells Flask to stop & release the camera
-        stop_gunicorn()                   # This kills the Gunicorn server
         logger.info("V1: Live stream stopped successfully")
         print("V1: Live stream stopped.")
                
@@ -374,16 +392,16 @@ try:
         blynk.run()
 except KeyboardInterrupt:
     logger.info("Keyboard interrupt received, shutting down gracefully")
+    stop_gunicorn()
     if camera:
         camera.stop()
     if streaming_active:
-        stop_camera_stream()
-        stop_gunicorn()
+        stop_camera_stream()    
     logger.info("Flood Control System stopped")
     print("Exiting cleanly.")
 except Exception as e:
     logger.critical(f"Unexpected error in main loop: {e}", exc_info=True)
 finally:
-    logger.info("=" * 60)
+    logger.info("=" * 5)
     logger.info("Flood Control System Shutdown Complete")
-    logger.info("=" * 60)
+    logger.info("=" * 5)
