@@ -295,6 +295,8 @@ def on_v1(value):
                
 # Water level sensor        
 def update_water_level_sensor(blynk):
+    global streaming_active  # Add global to access streaming state
+    
     last_inverted = None
     last_warning = 0  # Start with safe state
     
@@ -309,7 +311,7 @@ def update_water_level_sensor(blynk):
     distance_buffer = []
     BUFFER_SIZE = 5  # Average last 5 readings
     
-    warning_names = {0: "Safe", 1: "Yellow", 2: "Orange", 3: "Red"}
+    warning_names = {0: "No warning!", 1: "Yellow warning!", 2: "Orange warning!", 3: "Red warning!"}
     event_codes = {
         1: "caution",
         2: "serious_situation", 
@@ -368,14 +370,51 @@ def update_water_level_sensor(blynk):
                     if last_photo_dates[warning_img] != today:
                         logger.info(f"Auto-capture triggered for {warning_names[warning_img]} warning level")
                         print(f"Taking photo for warning level {warning_img}...")
+                        
+                        # Check if streaming is active
+                        was_streaming = streaming_active
+                        
+                        if was_streaming:
+                            logger.info("Auto-capture: Live stream is active, stopping stream temporarily")
+                            print("Auto-capture: Pausing live stream...")
+                            stop_camera_stream()
+                            time.sleep(2)  # Wait for camera to release
+                            streaming_active = False
+                            blynk.virtual_write(1, 0)  # Update V1 button to OFF
+                        
+                        # Now take the photo using your capture_warning_photo function
                         try:
                             from captured_photos import capture_warning_photo
                             capture_warning_photo(warning_img)
                             last_photo_dates[warning_img] = today
                             logger.info(f"Warning photo captured successfully for {warning_names[warning_img]} level")
+                            print(f"Photo captured for {warning_names[warning_img]}")
                         except Exception as e:
                             logger.error(f"Error capturing warning photo: {e}", exc_info=True)
                             print(f"Error capturing warning photo: {e}")
+                        
+                        # Resume streaming if it was active
+                        if was_streaming:
+                            logger.info("Auto-capture: Resuming live stream")
+                            print("Auto-capture: Resuming live stream...")
+                            time.sleep(1)  # Brief pause before restarting
+                            streaming_active = True
+                            start_camera_stream()
+                            time.sleep(2)  # Wait for stream to start
+                            
+                            # Refresh video widget
+                            try:
+                                timestamp_refresh = int(time.time())
+                                blynk.set_property(5, "url", f"https://pi.ustfloodcontrol.site/livecam?t={timestamp_refresh}")
+                                logger.info("Auto-capture: Video stream widget refreshed")
+                            except Exception as e:
+                                logger.error(f"Failed to refresh video widget: {e}")
+                            
+                            blynk.virtual_write(1, 1)  # Update V1 button back to ON
+                            logger.info("Auto-capture: Live stream resumed successfully")
+                            print("Auto-capture: Live stream resumed")
+                
+                last_warning = warning_img
                 
             print(f"Distance: {dist} mm ? Gauge: {inverted_value} | Warning: {warning_img}")
         else:

@@ -3263,3 +3263,294 @@ RuntimeError: Camera __init__ sequence did not complete.
 2025-11-11 17:47:26 - INFO - =====
 2025-11-11 17:47:26 - INFO - Flood Control System Shutdown Complete
 2025-11-11 17:47:26 - INFO - =====
+2025-11-11 18:30:40 - INFO - ============================================================
+2025-11-11 18:30:40 - INFO - Flood Control System Starting
+2025-11-11 18:30:40 - INFO - ============================================================
+2025-11-11 18:30:40 - INFO - UART serial port initialized successfully on /dev/serial0
+2025-11-11 18:30:40 - INFO - Water level sensor monitoring thread started
+2025-11-11 18:30:40 - INFO - Water level monitoring thread initialized
+2025-11-11 18:30:40 - INFO - Entering main Blynk event loop
+2025-11-11 18:30:40 - INFO - Raspberry Pi connected to Blynk cloud successfully
+2025-11-11 18:30:40 - INFO - Gunicorn server started with PID: 2602
+2025-11-11 18:30:40 - INFO - V3 (Gauge): Water level updated to 0 (distance: 1152mm)
+2025-11-11 18:30:48 - INFO - V3 (Gauge): Water level updated to 4 (distance: 139mm)
+2025-11-11 18:30:48 - INFO - V3 (Gauge): Water level updated to 13 (distance: 326mm)
+2025-11-11 18:30:48 - INFO - V3 (Gauge): Water level updated to 22 (distance: 134mm)
+2025-11-11 18:30:48 - INFO - V3 (Gauge): Water level updated to 24 (distance: 134mm)
+2025-11-11 18:30:49 - INFO - V3 (Gauge): Water level updated to 28 (distance: 129mm)
+2025-11-11 18:30:49 - INFO - V3 (Gauge): Water level updated to 33 (distance: 112mm)
+2025-11-11 18:30:49 - INFO - V3 (Gauge): Water level updated to 76 (distance: 112mm)
+2025-11-11 18:30:49 - WARNING - V4 (Warning): Alert level changed from No warning! to Yellow warning! (distance: 112mm)
+2025-11-11 18:30:49 - WARNING - Notification sent: caution - Yawa Bridge is under Yellow warning!
+2025-11-11 18:30:49 - INFO - Auto-capture triggered for Yellow warning! warning level
+2025-11-11 18:31:44 - INFO - Keyboard interrupt received, shutting down gracefully
+2025-11-11 18:31:44 - INFO - Stopping Gunicorn server...
+2025-11-11 18:31:44 - INFO - Gunicorn server stopped
+2025-11-11 18:31:44 - INFO - Flood Control System stopped
+2025-11-11 18:31:44 - INFO - =====
+2025-11-11 18:31:44 - INFO - Flood Control System Shutdown Complete
+2025-11-11 18:31:44 - INFO - =====
+2025-11-11 18:32:42 - INFO - ============================================================
+2025-11-11 18:32:42 - INFO - Flood Control System Starting
+2025-11-11 18:32:42 - INFO - ============================================================
+2025-11-11 18:32:42 - INFO - UART serial port initialized successfully on /dev/serial0
+2025-11-11 18:32:42 - INFO - Water level sensor monitoring thread started
+2025-11-11 18:32:42 - INFO - Water level monitoring thread initialized
+2025-11-11 18:32:42 - INFO - Entering main Blynk event loop
+2025-11-11 18:32:42 - INFO - Raspberry Pi connected to Blynk cloud successfully
+2025-11-11 18:32:42 - INFO - Gunicorn server started with PID: 2614
+2025-11-11 18:32:42 - INFO - V3 (Gauge): Water level updated to 0 (distance: 1148mm)
+2025-11-11 18:32:51 - WARNING - V0: Camera conflict detected - live stream is active
+2025-11-11 18:32:51 - INFO - V0: Stopping live stream to free camera...
+2025-11-11 18:32:51 - INFO - Camera stream stop request: Camera already stopped.
+2025-11-11 18:32:52 - INFO - V0: Live stream stopped, V1 reset to OFF
+2025-11-11 18:32:54 - INFO - V0: Camera initialized and started
+2025-11-11 18:32:56 - INFO - V0: Photo captured successfully
+2025-11-11 18:32:57 - INFO - V0: Button auto-reset to OFF
+2025-11-11 18:32:59 - INFO - V3 (Gauge): Water level updated to 31 (distance: 127mm)
+2025-11-11 18:32:59 - INFO - V3 (Gauge): Water level updated to 53 (distance: 142mm)
+2025-11-11 18:33:00 - INFO - V3 (Gauge): Water level updated to 61 (distance: 143mm)
+2025-11-11 18:33:00 - INFO - V3 (Gauge): Water level updated to 68 (distance: 122mm)
+2025-11-11 18:33:00 - WARNING - V4 (Warning): Alert level changed from No warning! to Yellow warning! (distance: 122mm)
+2025-11-11 18:33:00 - WARNING - Notification sent: caution - Yawa Bridge is under Yellow warning!
+2025-11-11 18:33:00 - INFO - Auto-capture triggered for Yellow warning! warning level
+2025-11-11 18:33:01 - INFO - Warning photo captured successfully for Yellow warning! level
+2025-11-11 18:33:01 - INFO - V3 (Gauge): Water level updated to 42 (distance: 255mm)
+2025-11-11 18:33:01 - WARNING - V4 (Warning): Alert level changed from Yellow warning! to No warning! (distance: 255mm)
+2025-11-11 18:33:02 - INFO - V3 (Gauge): Water level updated to 47 (distance: 118mm)
+2025-11-11 18:33:02 - INFO - V3 (Gauge): Water level updated to 52 (distance: 117mm)
+2025-11-11 18:33:02 - INFO - V3 (Gauge): Water level updated to 54 (distance: 112mm)
+2025-11-11 18:33:02 - INFO - V3 (Gauge): Water level updated to 58 (distance: 112mm)
+2025-11-11 18:33:02 - INFO - V3 (Gauge): Water level updated to 85 (distance: 116mm)
+2025-11-11 18:33:02 - WARNING - V4 (Warning): Alert level changed from No warning! to Yellow warning! (distance: 116mm)
+2025-11-11 18:33:02 - WARNING - Notification sent: caution - Yawa Bridge is under Yellow warning!
+2025-11-11 18:33:03 - INFO - V3 (Gauge): Water level updated to 0 (distance: 1148mm)
+2025-11-11 18:33:03 - WARNING - V4 (Warning): Alert level changed from Yellow warning! to No warning! (distance: 1148mm)
+2025-11-11 18:33:12 - INFO - V3 (Gauge): Water level updated to 52 (distance: 66mm)
+2025-11-11 18:33:12 - INFO - V3 (Gauge): Water level updated to 105 (distance: 64mm)
+2025-11-11 18:33:12 - WARNING - V4 (Warning): Alert level changed from No warning! to Yellow warning! (distance: 64mm)
+2025-11-11 18:33:12 - WARNING - Notification sent: caution - Yawa Bridge is under Yellow warning!
+2025-11-11 18:33:12 - INFO - V3 (Gauge): Water level updated to 123 (distance: 53mm)
+2025-11-11 18:33:13 - INFO - V3 (Gauge): Water level updated to 136 (distance: 48mm)
+2025-11-11 18:33:13 - WARNING - V4 (Warning): Alert level changed from Yellow warning! to Orange warning! (distance: 48mm)
+2025-11-11 18:33:13 - WARNING - Notification sent: serious_situation - Yawa Bridge is under Orange warning!
+2025-11-11 18:33:13 - INFO - Auto-capture triggered for Orange warning! warning level
+2025-11-11 18:33:14 - INFO - Warning photo captured successfully for Orange warning! level
+2025-11-11 18:33:14 - INFO - V3 (Gauge): Water level updated to 144 (distance: 50mm)
+2025-11-11 18:33:14 - INFO - V3 (Gauge): Water level updated to 148 (distance: 49mm)
+2025-11-11 18:33:14 - INFO - V3 (Gauge): Water level updated to 134 (distance: 131mm)
+2025-11-11 18:33:15 - INFO - V3 (Gauge): Water level updated to 0 (distance: 1148mm)
+2025-11-11 18:33:15 - WARNING - V4 (Warning): Alert level changed from Orange warning! to No warning! (distance: 1148mm)
+2025-11-11 18:35:45 - INFO - Keyboard interrupt received, shutting down gracefully
+2025-11-11 18:35:45 - INFO - Stopping Gunicorn server...
+2025-11-11 18:35:45 - INFO - Gunicorn server stopped
+2025-11-11 18:35:45 - INFO - Flood Control System stopped
+2025-11-11 18:35:45 - INFO - =====
+2025-11-11 18:35:45 - INFO - Flood Control System Shutdown Complete
+2025-11-11 18:35:45 - INFO - =====
+2025-11-11 18:35:52 - INFO - ============================================================
+2025-11-11 18:35:52 - INFO - Flood Control System Starting
+2025-11-11 18:35:52 - INFO - ============================================================
+2025-11-11 18:35:52 - INFO - UART serial port initialized successfully on /dev/serial0
+2025-11-11 18:35:52 - INFO - Water level sensor monitoring thread started
+2025-11-11 18:35:52 - INFO - Water level monitoring thread initialized
+2025-11-11 18:35:52 - INFO - Entering main Blynk event loop
+2025-11-11 18:35:52 - INFO - Raspberry Pi connected to Blynk cloud successfully
+2025-11-11 18:35:52 - INFO - Gunicorn server started with PID: 2674
+2025-11-11 18:35:53 - INFO - V3 (Gauge): Water level updated to 0 (distance: 1153mm)
+2025-11-11 18:36:28 - INFO - Keyboard interrupt received, shutting down gracefully
+2025-11-11 18:36:28 - INFO - Stopping Gunicorn server...
+2025-11-11 18:36:28 - INFO - Gunicorn server stopped
+2025-11-11 18:36:28 - INFO - Flood Control System stopped
+2025-11-11 18:36:28 - INFO - =====
+2025-11-11 18:36:28 - INFO - Flood Control System Shutdown Complete
+2025-11-11 18:36:28 - INFO - =====
+2025-11-11 18:37:07 - INFO - ============================================================
+2025-11-11 18:37:07 - INFO - Flood Control System Starting
+2025-11-11 18:37:07 - INFO - ============================================================
+2025-11-11 18:37:08 - INFO - UART serial port initialized successfully on /dev/serial0
+2025-11-11 18:37:08 - INFO - Water level sensor monitoring thread started
+2025-11-11 18:37:08 - INFO - Water level monitoring thread initialized
+2025-11-11 18:37:08 - INFO - Entering main Blynk event loop
+2025-11-11 18:37:08 - INFO - Raspberry Pi connected to Blynk cloud successfully
+2025-11-11 18:37:08 - INFO - Gunicorn server started with PID: 2690
+2025-11-11 18:37:08 - INFO - V3 (Gauge): Water level updated to 0 (distance: 1149mm)
+2025-11-11 18:37:21 - INFO - V3 (Gauge): Water level updated to 21 (distance: 120mm)
+2025-11-11 18:37:21 - INFO - V3 (Gauge): Water level updated to 64 (distance: 114mm)
+2025-11-11 18:37:22 - INFO - V3 (Gauge): Water level updated to 77 (distance: 114mm)
+2025-11-11 18:37:22 - WARNING - V4 (Warning): Alert level changed from No warning! to Yellow warning! (distance: 114mm)
+2025-11-11 18:37:22 - WARNING - Notification sent: caution - Yawa Bridge is under Yellow warning!
+2025-11-11 18:37:22 - INFO - Auto-capture triggered for Yellow warning! warning level
+2025-11-11 18:37:23 - INFO - Warning photo captured successfully for Yellow warning! level
+2025-11-11 18:37:23 - INFO - V3 (Gauge): Water level updated to 82 (distance: 115mm)
+2025-11-11 18:37:24 - INFO - V3 (Gauge): Water level updated to 84 (distance: 119mm)
+2025-11-11 18:37:24 - INFO - V3 (Gauge): Water level updated to 83 (distance: 118mm)
+2025-11-11 18:37:24 - INFO - V3 (Gauge): Water level updated to 0 (distance: 1150mm)
+2025-11-11 18:37:24 - WARNING - V4 (Warning): Alert level changed from Yellow warning! to No warning! (distance: 1150mm)
+2025-11-11 18:38:16 - INFO - Keyboard interrupt received, shutting down gracefully
+2025-11-11 18:38:16 - INFO - Stopping Gunicorn server...
+2025-11-11 18:38:16 - INFO - Gunicorn server stopped
+2025-11-11 18:38:16 - INFO - Flood Control System stopped
+2025-11-11 18:38:16 - INFO - =====
+2025-11-11 18:38:16 - INFO - Flood Control System Shutdown Complete
+2025-11-11 18:38:16 - INFO - =====
+2025-11-11 18:43:48 - INFO - ============================================================
+2025-11-11 18:43:48 - INFO - Flood Control System Starting
+2025-11-11 18:43:48 - INFO - ============================================================
+2025-11-11 18:43:48 - INFO - UART serial port initialized successfully on /dev/serial0
+2025-11-11 18:43:48 - INFO - Water level sensor monitoring thread started
+2025-11-11 18:43:48 - INFO - Water level monitoring thread initialized
+2025-11-11 18:43:48 - INFO - Entering main Blynk event loop
+2025-11-11 18:43:48 - INFO - Raspberry Pi connected to Blynk cloud successfully
+2025-11-11 18:43:48 - INFO - Gunicorn server started with PID: 2740
+2025-11-11 18:43:48 - INFO - V3 (Gauge): Water level updated to 0 (distance: 1152mm)
+2025-11-11 18:44:06 - INFO - V3 (Gauge): Water level updated to 44 (distance: 146mm)
+2025-11-11 18:44:07 - INFO - V3 (Gauge): Water level updated to 54 (distance: 144mm)
+2025-11-11 18:44:07 - INFO - V3 (Gauge): Water level updated to 56 (distance: 141mm)
+2025-11-11 18:44:07 - INFO - V3 (Gauge): Water level updated to 57 (distance: 141mm)
+2025-11-11 18:44:08 - INFO - V3 (Gauge): Water level updated to 56 (distance: 150mm)
+2025-11-11 18:44:08 - INFO - V3 (Gauge): Water level updated to 59 (distance: 131mm)
+2025-11-11 18:44:08 - INFO - V3 (Gauge): Water level updated to 61 (distance: 131mm)
+2025-11-11 18:44:09 - INFO - V3 (Gauge): Water level updated to 64 (distance: 125mm)
+2025-11-11 18:44:09 - INFO - V3 (Gauge): Water level updated to 70 (distance: 120mm)
+2025-11-11 18:44:09 - WARNING - V4 (Warning): Alert level changed from No warning! to Yellow warning! (distance: 120mm)
+2025-11-11 18:44:09 - WARNING - Notification sent: caution - Yawa Bridge is under Yellow warning!
+2025-11-11 18:44:09 - INFO - Auto-capture triggered for Yellow warning! warning level
+2025-11-11 18:44:17 - INFO - Keyboard interrupt received, shutting down gracefully
+2025-11-11 18:44:17 - INFO - Stopping Gunicorn server...
+2025-11-11 18:44:17 - INFO - Gunicorn server stopped
+2025-11-11 18:44:17 - INFO - Flood Control System stopped
+2025-11-11 18:44:17 - INFO - =====
+2025-11-11 18:44:17 - INFO - Flood Control System Shutdown Complete
+2025-11-11 18:44:17 - INFO - =====
+2025-11-11 18:45:34 - INFO - ============================================================
+2025-11-11 18:45:34 - INFO - Flood Control System Starting
+2025-11-11 18:45:34 - INFO - ============================================================
+2025-11-11 18:45:36 - INFO - UART serial port initialized successfully on /dev/serial0
+2025-11-11 18:45:36 - INFO - Water level sensor monitoring thread started
+2025-11-11 18:45:36 - INFO - Water level monitoring thread initialized
+2025-11-11 18:45:36 - INFO - Entering main Blynk event loop
+2025-11-11 18:45:36 - INFO - V3 (Gauge): Water level updated to 0 (distance: 1152mm)
+2025-11-11 18:45:36 - INFO - Raspberry Pi connected to Blynk cloud successfully
+2025-11-11 18:45:36 - INFO - Gunicorn server started with PID: 2752
+2025-11-11 18:45:39 - INFO - V3 (Gauge): Water level updated to 1 (distance: 150mm)
+2025-11-11 18:45:39 - INFO - V3 (Gauge): Water level updated to 25 (distance: 142mm)
+2025-11-11 18:45:40 - INFO - V3 (Gauge): Water level updated to 43 (distance: 136mm)
+2025-11-11 18:45:40 - INFO - V3 (Gauge): Water level updated to 56 (distance: 129mm)
+2025-11-11 18:45:40 - INFO - V3 (Gauge): Water level updated to 63 (distance: 129mm)
+2025-11-11 18:45:40 - INFO - V3 (Gauge): Water level updated to 67 (distance: 129mm)
+2025-11-11 18:45:40 - WARNING - V4 (Warning): Alert level changed from No warning! to Yellow warning! (distance: 129mm)
+2025-11-11 18:45:40 - WARNING - Notification sent: caution - Yawa Bridge is under Yellow warning!
+2025-11-11 18:45:40 - INFO - Auto-capture triggered for Yellow warning! warning level
+2025-11-11 18:45:42 - INFO - Warning photo captured successfully for Yellow warning! level
+2025-11-11 18:45:42 - INFO - V3 (Gauge): Water level updated to 70 (distance: 127mm)
+2025-11-11 18:45:43 - INFO - V3 (Gauge): Water level updated to 72 (distance: 126mm)
+2025-11-11 18:45:43 - INFO - V3 (Gauge): Water level updated to 73 (distance: 126mm)
+2025-11-11 18:45:43 - INFO - V3 (Gauge): Water level updated to 74 (distance: 126mm)
+2025-11-11 18:45:43 - INFO - V3 (Gauge): Water level updated to 69 (distance: 150mm)
+2025-11-11 18:45:43 - INFO - V3 (Gauge): Water level updated to 0 (distance: 1152mm)
+2025-11-11 18:45:43 - WARNING - V4 (Warning): Alert level changed from Yellow warning! to No warning! (distance: 1152mm)
+2025-11-11 18:46:22 - INFO - V3 (Gauge): Water level updated to 33 (distance: 79mm)
+2025-11-11 18:46:22 - INFO - V3 (Gauge): Water level updated to 85 (distance: 67mm)
+2025-11-11 18:46:22 - WARNING - V4 (Warning): Alert level changed from No warning! to Yellow warning! (distance: 67mm)
+2025-11-11 18:46:22 - WARNING - Notification sent: caution - Yawa Bridge is under Yellow warning!
+2025-11-11 18:46:22 - INFO - V3 (Gauge): Water level updated to 111 (distance: 80mm)
+2025-11-11 18:46:23 - INFO - V3 (Gauge): Water level updated to 131 (distance: 30mm)
+2025-11-11 18:46:23 - WARNING - V4 (Warning): Alert level changed from Yellow warning! to Orange warning! (distance: 30mm)
+2025-11-11 18:46:23 - WARNING - Notification sent: serious_situation - Yawa Bridge is under Orange warning!
+2025-11-11 18:46:23 - INFO - Auto-capture triggered for Orange warning! warning level
+2025-11-11 18:46:24 - INFO - Warning photo captured successfully for Orange warning! level
+2025-11-11 18:46:24 - INFO - V3 (Gauge): Water level updated to 144 (distance: 28mm)
+2025-11-11 18:46:24 - INFO - V3 (Gauge): Water level updated to 153 (distance: 32mm)
+2025-11-11 18:46:24 - INFO - V3 (Gauge): Water level updated to 158 (distance: 43mm)
+2025-11-11 18:46:25 - INFO - V3 (Gauge): Water level updated to 0 (distance: 1152mm)
+2025-11-11 18:46:25 - WARNING - V4 (Warning): Alert level changed from Orange warning! to No warning! (distance: 1152mm)
+2025-11-11 18:47:09 - INFO - V3 (Gauge): Water level updated to 129 (distance: 45mm)
+2025-11-11 18:47:09 - WARNING - V4 (Warning): Alert level changed from No warning! to Orange warning! (distance: 45mm)
+2025-11-11 18:47:09 - WARNING - Notification sent: serious_situation - Yawa Bridge is under Orange warning!
+2025-11-11 18:47:09 - INFO - V3 (Gauge): Water level updated to 153 (distance: 30mm)
+2025-11-11 18:47:09 - INFO - V3 (Gauge): Water level updated to 0 (distance: 1148mm)
+2025-11-11 18:47:09 - WARNING - V4 (Warning): Alert level changed from Orange warning! to No warning! (distance: 1148mm)
+2025-11-11 18:47:12 - INFO - V3 (Gauge): Water level updated to 164 (distance: 18mm)
+2025-11-11 18:47:12 - WARNING - V4 (Warning): Alert level changed from No warning! to Orange warning! (distance: 18mm)
+2025-11-11 18:47:12 - WARNING - Notification sent: serious_situation - Yawa Bridge is under Orange warning!
+2025-11-11 18:47:13 - INFO - V3 (Gauge): Water level updated to 176 (distance: 23mm)
+2025-11-11 18:47:13 - WARNING - V4 (Warning): Alert level changed from Orange warning! to Red warning! (distance: 23mm)
+2025-11-11 18:47:13 - WARNING - Notification sent: critical_level - Yawa Bridge is under Red warning!
+2025-11-11 18:47:13 - INFO - Auto-capture triggered for Red warning! warning level
+2025-11-11 18:47:14 - INFO - Warning photo captured successfully for Red warning! level
+2025-11-11 18:47:14 - INFO - V3 (Gauge): Water level updated to 167 (distance: 72mm)
+2025-11-11 18:47:14 - INFO - V3 (Gauge): Water level updated to 159 (distance: 64mm)
+2025-11-11 18:47:14 - WARNING - V4 (Warning): Alert level changed from Red warning! to Orange warning! (distance: 64mm)
+2025-11-11 18:47:14 - WARNING - Notification sent: serious_situation - Yawa Bridge is under Orange warning!
+2025-11-11 18:47:14 - INFO - V3 (Gauge): Water level updated to 155 (distance: 50mm)
+2025-11-11 18:47:15 - INFO - V3 (Gauge): Water level updated to 149 (distance: 46mm)
+2025-11-11 18:47:15 - INFO - V3 (Gauge): Water level updated to 144 (distance: 51mm)
+2025-11-11 18:47:15 - INFO - V3 (Gauge): Water level updated to 150 (distance: 40mm)
+2025-11-11 18:47:15 - INFO - V3 (Gauge): Water level updated to 0 (distance: 1148mm)
+2025-11-11 18:47:15 - WARNING - V4 (Warning): Alert level changed from Orange warning! to No warning! (distance: 1148mm)
+2025-11-11 18:47:52 - WARNING - V0: Camera conflict detected - live stream is active
+2025-11-11 18:47:52 - INFO - V0: Stopping live stream to free camera...
+2025-11-11 18:47:52 - INFO - Camera stream stop request: Camera already stopped.
+2025-11-11 18:47:53 - INFO - V0: Live stream stopped, V1 reset to OFF
+2025-11-11 18:47:55 - INFO - V0: Camera initialized and started
+2025-11-11 18:47:56 - INFO - V0: Photo captured successfully
+2025-11-11 18:47:57 - INFO - V0: Button auto-reset to OFF
+2025-11-11 18:48:07 - WARNING - V0: Camera conflict detected - live stream is active
+2025-11-11 18:48:07 - INFO - V0: Stopping live stream to free camera...
+2025-11-11 18:48:07 - INFO - Camera stream stop request: Camera already stopped.
+2025-11-11 18:48:08 - INFO - V0: Live stream stopped, V1 reset to OFF
+2025-11-11 18:48:10 - INFO - V0: Camera initialized and started
+2025-11-11 18:48:11 - INFO - V0: Photo captured successfully
+2025-11-11 18:48:12 - INFO - V0: Button auto-reset to OFF
+2025-11-11 18:50:32 - INFO - Keyboard interrupt received, shutting down gracefully
+2025-11-11 18:50:32 - INFO - Stopping Gunicorn server...
+2025-11-11 18:50:32 - INFO - Gunicorn server stopped
+2025-11-11 18:50:32 - INFO - Flood Control System stopped
+2025-11-11 18:50:32 - INFO - =====
+2025-11-11 18:50:32 - INFO - Flood Control System Shutdown Complete
+2025-11-11 18:50:32 - INFO - =====
+2025-11-11 18:50:37 - INFO - ============================================================
+2025-11-11 18:50:37 - INFO - Flood Control System Starting
+2025-11-11 18:50:37 - INFO - ============================================================
+2025-11-11 18:50:37 - INFO - UART serial port initialized successfully on /dev/serial0
+2025-11-11 18:50:37 - INFO - Water level sensor monitoring thread started
+2025-11-11 18:50:37 - INFO - Water level monitoring thread initialized
+2025-11-11 18:50:37 - INFO - Entering main Blynk event loop
+2025-11-11 18:50:37 - INFO - Raspberry Pi connected to Blynk cloud successfully
+2025-11-11 18:50:37 - INFO - Gunicorn server started with PID: 2824
+2025-11-11 18:50:38 - INFO - V3 (Gauge): Water level updated to 0 (distance: 1155mm)
+2025-11-11 18:50:48 - WARNING - V0: Camera conflict detected - live stream is active
+2025-11-11 18:50:48 - INFO - V0: Stopping live stream to free camera...
+2025-11-11 18:50:48 - INFO - Camera stream stop request: Camera already stopped.
+2025-11-11 18:50:49 - INFO - V0: Live stream stopped, V1 reset to OFF
+2025-11-11 18:50:52 - INFO - V0: Camera initialized and started
+2025-11-11 18:50:53 - INFO - V0: Photo captured successfully
+2025-11-11 18:50:54 - INFO - V0: Button auto-reset to OFF
+2025-11-11 18:51:49 - INFO - V1: Live stream button pressed (ON)
+2025-11-11 18:51:49 - INFO - Stopping Gunicorn server...
+2025-11-11 18:51:49 - INFO - Gunicorn server stopped
+2025-11-11 18:51:49 - INFO - Gunicorn server started with PID: 2841
+2025-11-11 18:51:53 - ERROR - Error starting camera stream: HTTPConnectionPool(host='127.0.0.1', port=8000): Read timed out. (read timeout=2)
+2025-11-11 18:51:56 - INFO - V5: Video stream widget refreshed
+2025-11-11 18:51:56 - INFO - V1: Live stream started
+2025-11-11 18:52:09 - INFO - V1: Live stream button pressed (OFF)
+2025-11-11 18:52:09 - INFO - Camera stream stop request: Camera stopped.
+2025-11-11 18:52:09 - INFO - V1: Live stream stopped successfully
+2025-11-11 18:52:12 - INFO - V1: Live stream button pressed (ON)
+2025-11-11 18:52:12 - INFO - Stopping Gunicorn server...
+2025-11-11 18:52:12 - INFO - Gunicorn server stopped
+2025-11-11 18:52:12 - INFO - Gunicorn server started with PID: 2853
+2025-11-11 18:52:16 - ERROR - Error starting camera stream: HTTPConnectionPool(host='127.0.0.1', port=8000): Read timed out. (read timeout=2)
+2025-11-11 18:52:19 - INFO - V5: Video stream widget refreshed
+2025-11-11 18:52:19 - INFO - V1: Live stream started
+2025-11-11 18:53:12 - INFO - V1: Live stream button pressed (OFF)
+2025-11-11 18:53:12 - INFO - Camera stream stop request: Camera stopped.
+2025-11-11 18:53:12 - INFO - V1: Live stream stopped successfully
+2025-11-11 18:53:18 - INFO - Keyboard interrupt received, shutting down gracefully
+2025-11-11 18:53:18 - INFO - Stopping Gunicorn server...
+2025-11-11 18:53:18 - INFO - Gunicorn server stopped
+2025-11-11 18:53:18 - INFO - Flood Control System stopped
+2025-11-11 18:53:18 - INFO - =====
+2025-11-11 18:53:18 - INFO - Flood Control System Shutdown Complete
+2025-11-11 18:53:18 - INFO - =====

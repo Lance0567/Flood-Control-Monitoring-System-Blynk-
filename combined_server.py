@@ -91,6 +91,10 @@ def livecam():
     """Live camera stream endpoint"""
     return Response(gen_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
+@app.route('/photos_img/<path:filename>')
+def photos_img(filename):
+    return send_from_directory(PHOTO_DIR, filename)
+
 @app.route('/photo_list')
 def photo_list():
     try:
