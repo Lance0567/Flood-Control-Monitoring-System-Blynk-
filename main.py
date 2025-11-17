@@ -1,4 +1,4 @@
-# main.py - Flood Control
+# main.py - Flood Monitoring
 import sys
 import time
 import requests
@@ -176,9 +176,18 @@ def stop_camera_stream():
 def blynk_connected(*args, **kwargs):   # Accepts any arguments
     logger.info("Raspberry Pi connected to Blynk cloud successfully")
     print("/ Raspberry Pi Connected to Blynk")
+    stop_gunicorn()
+    time.sleep(2)
     start_gunicorn()                  # This starts the Flask/Gunicorn process
+    stop_camera_stream()
+    time.sleep(2)
     blynk.virtual_write(0, 0)
     blynk.virtual_write(1, 0)
+    blynk.set_property(5, "url", "https://dummyimage.com/640x480/000/fff&text=Live+Stream+Offline")
+            
+    # Method 2: Toggle widget (turn off then on)
+    blynk.virtual_write(5, 0)
+    blynk.virtual_write(5, 1)
 
 # Take photo with conflict detection and auto-retry
 @blynk.on("V0")
@@ -198,7 +207,7 @@ def on_v0(value):
             # Stop the live stream
             stop_camera_stream()
             time.sleep(1)  # Wait for camera to release
-#             stop_gunicorn()
+            stop_gunicorn()
             streaming_active = False
             
             # Turn off V1 in Blynk app
@@ -206,10 +215,11 @@ def on_v0(value):
             logger.info("V0: Live stream stopped, V1 reset to OFF")
             print("V0: Stream stopped. Waiting for camera to be ready...")
             time.sleep(2)  # Give camera time to fully release
+            start_gunicorn()
         
         # Now take the photo
         try:
-            from picamera2 import Picamera2
+            from picamera2 import Picamera2999999999999
             camera = Picamera2()
             camera.configure(camera.create_preview_configuration(main={"size": (840, 560), "format": "RGB888"}))
             camera.start()
@@ -290,6 +300,12 @@ def on_v1(value):
         print("V1: Stop stream request received")
         streaming_active = False
         stop_camera_stream()              # This tells Flask to stop & release the camera
+        time.sleep(1)
+        blynk.set_property(5, "url", "https://dummyimage.com/640x480/000/fff&text=Live+Stream+Offline")
+            
+        # Method 2: Toggle widget (turn off then on)
+        blynk.virtual_write(5, 0)
+        blynk.virtual_write(5, 1)
         logger.info("V1: Live stream stopped successfully")
         print("V1: Live stream stopped.")
                
@@ -376,11 +392,13 @@ def update_water_level_sensor(blynk):
                         
                         if was_streaming:
                             logger.info("Auto-capture: Live stream is active, stopping stream temporarily")
-                            print("Auto-capture: Pausing live stream...")
+                            print("Auto-capture: Pausing live stream...")                            
                             stop_camera_stream()
-                            time.sleep(2)  # Wait for camera to release
+                            time.sleep(1)  # Wait for camera to release
+                            stop_gunicorn()
                             streaming_active = False
                             blynk.virtual_write(1, 0)  # Update V1 button to OFF
+                            time.sleep(1)
                         
                         # Now take the photo using your capture_warning_photo function
                         try:
@@ -397,20 +415,21 @@ def update_water_level_sensor(blynk):
                         if was_streaming:
                             logger.info("Auto-capture: Resuming live stream")
                             print("Auto-capture: Resuming live stream...")
+                            start_gunicorn()
                             time.sleep(1)  # Brief pause before restarting
                             streaming_active = True
                             start_camera_stream()
-                            time.sleep(2)  # Wait for stream to start
+                            time.sleep(1)  # Wait for stream to start
                             
                             # Refresh video widget
                             try:
+                                blynk.virtual_write(1, 1)  # Update V1 button back to ON
                                 timestamp_refresh = int(time.time())
                                 blynk.set_property(5, "url", f"https://pi.ustfloodcontrol.site/livecam?t={timestamp_refresh}")
                                 logger.info("Auto-capture: Video stream widget refreshed")
                             except Exception as e:
                                 logger.error(f"Failed to refresh video widget: {e}")
-                            
-                            blynk.virtual_write(1, 1)  # Update V1 button back to ON
+                                                    
                             logger.info("Auto-capture: Live stream resumed successfully")
                             print("Auto-capture: Live stream resumed")
                 
