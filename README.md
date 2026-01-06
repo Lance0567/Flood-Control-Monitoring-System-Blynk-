@@ -34,7 +34,7 @@ This project is intended for **academic research, disaster preparedness, and sma
 ---
 
 ## 🧠 System Architecture
-
+```text
 Solar Panel
 ↓
 Charge Controller → Battery
@@ -46,6 +46,7 @@ Raspberry Pi
 └─ Cloudflare Tunnel
 ↓
 Blynk.Console (Desktop) / Blynk.App (Mobile)
+```
 
 ## 🧰 Hardware Components
 
@@ -100,15 +101,17 @@ https://pi.ustfloodcontrol.site
 ---
 
 ## 📂 Project Structure
+```text
+.
 ├── main.py # Entry point
 ├── combined_server.py # Flask server (stream + images)
 ├── camera_module.py # PiCamera abstraction
 ├── captured_photos.py # Photo capture & storage logic
 ├── static/
-│ └── photos/ # Captured images
+│   └── photos/ # Captured images
 ├── requirements.txt
 └── README.md
-
+```
 ---
 
 ## 🚀 Getting Started
