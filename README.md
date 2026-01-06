@@ -118,7 +118,7 @@ https://pi.ustfloodcontrol.site
 
 ### 1 Clone the Repository
 ```bash
-git clone https://github.com/Lance0567/ust-flood-control.git
+git clone https://github.com/Lance0567/Flood-Control-Monitoring-System-Blynk-.git
 cd ust-flood-control
 ```
 
