@@ -1,116 +1,80 @@
-# 🌊 UST Flood Control Monitoring System  
-**Solar-Powered IoT Flood Monitoring with Real-Time Camera Streaming**
+# 🌊 IoT-Based Flood Monitoring and Real-Time Early Warning System
+**A Solar-Powered, Multi-Sensor Prototype for Environmental Observation**
 
 ![Status](https://img.shields.io/badge/status-active-success)
-![Platform](https://img.shields.io/badge/platform-Raspberry%20Pi-blue)
-![IoT](https://img.shields.io/badge/IoT-Blynk-green)
-![License](https://img.shields.io/badge/license-MIT-lightgrey)
-
----
+![Platform](https://img.shields.io/badge/platform-Raspberry%20Pi%204-blue)
+![Language](https://img.shields.io/badge/language-Python%203-yellow)
+![Connectivity](https://img.shields.io/badge/connectivity-GSM%20%7C%20Cloudflare-orange)
 
 ## 📌 Project Overview
+This project is a functional engineering prototype I designed and built for real-time water level observation and automated alerting. Modeled specifically for the environmental constraints of the **Yawa River in Legazpi City**, the system moves beyond simple monitoring by implementing a hybrid detection logic that combines ultrasonic distance polling with visual marker validation.
 
-The **UST Flood Control Monitoring System** is a **solar-powered, Raspberry Pi–based IoT prototype** designed for **real-time flood monitoring and visual inspection**.
-
-The system integrates:
-- Live camera streaming  
-- Remote photo capture  
-- Cloud-based dashboard (Blynk)  
-- Secure public access via Cloudflare Tunnel  
-- Off-grid solar power system  
-
-This project is intended for **academic research, disaster preparedness, and smart city flood mitigation applications**.
+Unlike standard IoT projects, I designed this system for **functional sustainability** in off-grid locations, utilizing a dedicated solar power regulation circuit and a GSM-based failover for critical SMS alerts.
 
 ---
 
-## 🎯 Objectives
+## 🧠 System Architecture & Logic Flow
+I utilized a Raspberry Pi 4 as the central compute node to manage concurrent threads for sensor polling, image processing, and remote telemetry.
 
-- Provide **real-time visual monitoring** of flood-prone areas  
-- Enable **remote access** from any device or network  
-- Operate using **renewable solar energy**  
-- Centralize control and monitoring using **Blynk**  
-- Serve as a **research-grade prototype** for flood early warning systems  
 
----
 
-## 🧠 System Architecture
-```text
-Solar Panel
-↓
-Charge Controller → Battery
-↓
-Raspberry Pi
-├─ Camera Module
-├─ Flask Streaming Server
-├─ Blynk Control Logic
-└─ Cloudflare Tunnel
-↓
-Blynk.Console (Desktop) / Blynk.App (Mobile)
-```
-
-## 🧰 Hardware Components
-
-- Raspberry Pi 4  
-- Raspberry Pi Camera Module  
-- Solar Panel  
-- Solar Charge Controller  
-- Rechargeable Battery  
-- Weatherproof Electrical Enclosure  
-- Status LEDs  
-- Mounting Pole & Bracket  
+### Detection Strategy
+1.  **Primary Sensing:** Continuous polling via an A02YYUW waterproof ultrasonic sensor to measure distance to the water surface.
+2.  **Visual Validation:** A NoIR camera captures frames of physical gauge markers to confirm level breaches visually.
+3.  **Rate-of-Rise Calculation:** The firmware calculates the velocity of the rising water to determine the urgency of the alert.
+4.  **Tiered Response:** Logic-driven SMS alerts (Early Warning, Critical, or Forced Evacuation) are dispatched via the SIM800L GSM module.
 
 ---
 
-## 💻 Software Stack
+## 🧰 Hardware Design Decisions
 
-| Component | Technology |
-|---------|-----------|
-| OS | Raspberry Pi OS |
-| Programming Language | Python 3 |
-| Camera | Picamera2 |
-| Web Server | Flask |
-| Streaming | MJPEG |
-| IoT Dashboard | Blynk |
-| Secure Access | Cloudflare Tunnel |
+| Component | Choice | Engineering Reasoning |
+| :--- | :--- | :--- |
+| **Controller** | Raspberry Pi 4 | Necessary for handling the Flask-based MJPEG stream and Python-based image processing concurrently. |
+| **Distance Sensor** | A02YYUW Ultrasonic | Waterproof (IP67) and non-contact; avoids debris interference common in river environments. |
+| **Camera** | Pi Camera v3 NoIR | Allows for effective nighttime monitoring when paired with IR illumination, without using visible light. |
+| **Telemetry** | SIM800L GSM | Provides a redundant communication path for SMS alerts when local internet backhauls fail during storms. |
+| **Power** | Solar + 5V Regulated | Ensures 24/7 operation in remote riverside locations without grid access. |
+
+> **Technical Note:** To protect the Raspberry Pi’s 3.3V GPIO pins from the 5V logic of the GSM module and sensors, I implemented **resistor-based voltage dividers** across all high-voltage signal lines.
 
 ---
 
-## 📸 Key Features
+## 💻 Software Implementation
 
-### ✅ Live Camera Streaming
-- Real-time MJPEG video feed  
-- Accessible via permanent HTTPS URL  
+The system runs a custom Python stack I wrote for low-latency data availability and secure remote access:
 
-### ✅ Remote Photo Capture
-- Triggered via **Blynk Virtual Pin (V0)**  
-- Images saved locally with **timestamp**  
-- Ready for gallery / carousel display  
+* **Logic Engine:** Python 3 utilizing `Picamera2` and GPIO interrupts.
+* **Web Stack:** A **Flask** server handles the MJPEG live stream and serves a local web gallery.
+* **IoT Integration:** **Blynk** serves as the mobile control interface and real-time data visualization layer.
+* **Secure Tunneling:** **Cloudflare Tunnel** securely exposes the local Flask server to the public web via HTTPS without the security risks of port forwarding.
 
-### ✅ Live Stream Control
-- Toggle live camera server via **Virtual Pin (V1)**  
+---
 
-### ✅ Secure Public Access
-- Cloudflare Tunnel exposes the server without port forwarding  
-- Custom domain:
-https://pi.ustfloodcontrol.site
+## 🛠️ Implementation Challenges & Trade-offs
+* **Power Management:** The Pi 4’s high power draw necessitated an **on-demand capture model**. The camera and high-bandwidth streaming only trigger during specific user-requested intervals or when the ultrasonic sensor detects a threshold breach.
+* **Signal Integrity:** During GSM transmission, the SIM800L creates significant current spikes. I had to integrate large decoupling capacitors across the module's power rails to prevent system brownouts and reboots during alert dispatches.
+* **Environmental Noise:** Ultrasonic sensors can produce "ghost" readings from surface ripples or heavy rain. To address this, the firmware implements a moving average filter to ensure data stability before triggering logic states.
 
-### ✅ Cross-Platform Dashboard
-- **Blynk.Console** (Desktop)  
-- **Blynk.App** (Mobile)  
+---
+
+## 📈 Testing & Validation Metrics
+I evaluated the prototype based on strict operational criteria:
+* **Day vs. Night Reliability:** Validated the NoIR camera's ability to distinguish level markers in zero-visible-light conditions using IR.
+* **Response Time:** Measured the latency between a detected water level breach and the receipt of an SMS alert on mobile networks.
+* **Power Autonomy:** Tested the solar-battery cycle under continuous operation to validate functional sustainability over multiple days.
 
 ---
 
 ## 📂 Project Structure
 ```text
 .
-├── main.py # Entry point
-├── combined_server.py # Flask server (stream + images)
-├── camera_module.py # PiCamera abstraction
-├── captured_photos.py # Photo capture & storage logic
-├── static/
-│   └── photos/ # Captured images
-├── requirements.txt
-└── README.md
+├── main.py               # Main logic & sensor polling thread
+├── combined_server.py    # Flask server (MJPEG stream + image gallery)
+├── camera_module.py      # PiCamera abstraction for capture/stream
+├── captured_photos.py    # Local storage & timestamping logic
+├── static/               # Web assets and photo storage
+└── requirements.txt      # Dependency list
 ```
 ---
 
