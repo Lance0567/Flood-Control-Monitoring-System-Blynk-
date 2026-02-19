@@ -34,9 +34,9 @@ I utilized a Raspberry Pi 4 as the central compute node to manage concurrent thr
 | **Distance Sensor** | A02YYUW Ultrasonic | Waterproof (IP67) and non-contact; avoids debris interference common in river environments. |
 | **Camera** | Pi Camera v3 NoIR | Allows for effective nighttime monitoring when paired with IR illumination, without using visible light. |
 | **Telemetry** | SIM800L GSM | Provides a redundant communication path for SMS alerts when local internet backhauls fail during storms. |
-| **Power** | Solar + 5V Regulated | Ensures 24/7 operation in remote riverside locations without grid access. |
+| **Power Protection** | Buck Step-Down Converter (24V/12V to 5V) | Ensures safe, regulated power delivery from the solar/battery system, protecting the Pi and its GPIO pins from overvoltage. |
 
-> **Technical Note:** To protect the Raspberry Pi’s 3.3V GPIO pins from the 5V logic of the GSM module and sensors, I implemented **resistor-based voltage dividers** across all high-voltage signal lines.
+> **Technical Note:** To protect the Raspberry Pi’s sensitive 3.3V GPIO pins and main board from the voltage fluctuations of the solar battery system, I implemented a **Buck Step-Down Converter (24V/12V to 5V)**. This ensures a clean, stable 5V power rail for the Pi and attached peripherals, preventing catastrophic power spikes.
 
 ---
 
